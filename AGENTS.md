@@ -75,7 +75,16 @@ Do not claim something works unless it was verified or the limitation is clearly
 - Keep one logical change per commit.
 - Keep commit titles concise.
 
+## Worklog Rules
+
+- Keep `docs/mock-demo-worklog.md` concise and easy to scan.
+- After each completed step, update only the step summary, key changed files, verification result, remaining risks, and next step.
+- Do not list every inspected file unless it is essential.
+- Do not repeat the same verification result in multiple sections.
+- Do not invent verification results.
+
 Example:
 
 ```txt
 ✨ Feat: MSW mock 환경 구성 (#1)
+```
