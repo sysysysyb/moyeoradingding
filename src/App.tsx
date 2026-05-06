@@ -1,6 +1,6 @@
 import '@/App.css';
 
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import AuthLayout from '@/components/layouts/AuthLayout';
 import Layout from '@/components/layouts/Layout';
@@ -15,14 +15,25 @@ import ManagerMainPage from '@/pages/main/manager/ManagerMainPage';
 import MyProfile from '@/pages/MyProfile';
 import MySchedule from '@/pages/MySchedule';
 import Register from '@/pages/Register';
+import { useUserStore } from '@/stores/userStore';
 
 import Chat from './pages/chat/Chat';
+
+function RootPage() {
+  const { isLoggedIn, user } = useUserStore();
+
+  if (isLoggedIn && user?.role === 'NORMAL') {
+    return <Navigate to="/search" replace />;
+  }
+
+  return <LandingPage />;
+}
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Layout component="landing" />}>
-        <Route index element={<LandingPage />} />
+        <Route index element={<RootPage />} />
       </Route>
 
       <Route path="/auth" element={<AuthLayout />}>

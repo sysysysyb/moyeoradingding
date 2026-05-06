@@ -38,6 +38,8 @@ The first priority is a stable, reviewer-friendly deployed demo. The goal is not
 | 6. Demo auth mock | Done | Added demo login user and auth handlers for login, mypage profile fetch, and logout. | `src/mocks/data/auth.ts`, `src/mocks/handlers/auth.ts`, `src/mocks/handlers.ts` | Build passed; targeted ESLint passed; login verified. |
 | 7. Search page mock support | Incomplete / needs verification | Current repo state does not confirm wildcard handlers for `/idols/`, `/bookmarks/idols/`, or `/bookmarks/groups/`. `/search` may still hit the backend. | `src/pages/idolSearch/*`, `src/api/idolApi.ts`, `src/api/bookmarkIdolApi.ts`, `src/mocks/handlers.ts` | Not fully verified in current context. |
 | 8. Search MSW handlers | Implemented / needs browser verification | Added in-memory idol bookmark state and MSW handlers for `/search` idol list/search and idol bookmark add/remove. Mocked endpoints: `GET */idols/`, `GET */bookmarks/idols/`, `GET */bookmarks/groups/`, `POST */bookmarks/idols/`, `DELETE */bookmarks/idols/:bookmarkId/`. | `src/mocks/data/bookmarks.ts`, `src/mocks/handlers/bookmarks.ts`, `src/mocks/handlers/idols.ts`, `src/mocks/handlers.ts` | Build passed; targeted ESLint passed. Browser/network verification still needed. |
+| 9. UX/routing inspection | Planned | Inspected demo login UX, root route behavior, `/search` bookmark removal, and idol detail blank/back behavior before implementation. | `src/pages/Login.tsx`, `src/App.tsx`, `src/pages/idolSearch/useIdolSearch.ts`, `src/pages/main/fan/*` | Inspection only. |
+| 10. UX stabilization | Implemented / needs browser verification | Added demo login button, root redirect for logged-in fan users, stable favorite cards on `/search`, and idol detail loading/error fallback UI. | `src/pages/Login.tsx`, `src/App.tsx`, `src/pages/idolSearch/useIdolSearch.ts`, `src/pages/main/fan/*` | Build passed; targeted ESLint passed. Browser verification still needed. |
 
 ## Current Verified Status
 
@@ -47,7 +49,9 @@ The first priority is a stable, reviewer-friendly deployed demo. The goal is not
 - No terminal or browser console errors were found during login test.
 - Full lint still has unrelated existing issues.
 - Search mock TypeScript files passed targeted ESLint.
+- UX stabilization changed files passed targeted ESLint.
 - `/search` MSW browser/network flow is not fully verified in the current context.
+- UX stabilization browser behavior is not fully verified in the current context.
 
 ## Remaining Risks
 
@@ -55,7 +59,8 @@ The first priority is a stable, reviewer-friendly deployed demo. The goal is not
 - Existing old mock paths may not match current API paths.
 - `onUnhandledRequest: 'bypass'` can hide missing mocks.
 - Chat uses WebSocket and remains excluded.
+- Idol detail and schedule MSW handlers are still not implemented.
 
 ## Next Step
 
-Verify `/search` MSW support before moving to idol detail and schedule mocks.
+Verify the UX stabilization in browser, then prepare idol detail and schedule MSW mocks.

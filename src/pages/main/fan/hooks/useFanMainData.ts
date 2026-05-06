@@ -23,19 +23,31 @@ export function useFanMainData() {
   const { favoriteIdols } = useBookmarkSync();
   const queryClient = useQueryClient();
 
-  const { data: idolDetail } = useQuery({
+  const {
+    data: idolDetail,
+    isLoading: isIdolDetailLoading,
+    isError: isIdolDetailError,
+  } = useQuery({
     queryKey: ['idol', 'detail', parsedIdolId],
     enabled: Number.isFinite(parsedIdolId) && parsedIdolId > 0,
     queryFn: () => fetchIdolDetail(parsedIdolId),
   });
 
-  const { data: idolSchedulesFromApi } = useQuery({
+  const {
+    data: idolSchedulesFromApi,
+    isLoading: isIdolSchedulesLoading,
+    isError: isIdolSchedulesError,
+  } = useQuery({
     queryKey: ['idol', 'schedules', parsedIdolId],
     enabled: Number.isFinite(parsedIdolId) && parsedIdolId > 0,
     queryFn: () => fetchIdolSchedules(parsedIdolId),
   });
 
-  const { data: rawBookmarkedSchedules } = useQuery({
+  const {
+    data: rawBookmarkedSchedules,
+    isLoading: isBookmarkedSchedulesLoading,
+    isError: isBookmarkedSchedulesError,
+  } = useQuery({
     queryKey: ['myBookmarkEntries'],
     queryFn: getBookmarkSchedules,
   });
@@ -119,7 +131,7 @@ export function useFanMainData() {
 
   const handleFavoriteToggle = useCallback(() => {
     if (parsedIdolId) toggleFavorite(parsedIdolId);
-  }, [parsedIdolId, toggleFavorite]);
+  }, [parsedIdolId]);
 
   return {
     idolId: parsedIdolId,
@@ -127,6 +139,12 @@ export function useFanMainData() {
     setSelectedDate,
     filteredSchedules,
     currentIdol,
+    isLoading:
+      isIdolDetailLoading ||
+      isIdolSchedulesLoading ||
+      isBookmarkedSchedulesLoading,
+    isError:
+      isIdolDetailError || isIdolSchedulesError || isBookmarkedSchedulesError,
     isFavorite,
     handleFavoriteToggle,
     toggleScheduleBookmark,
