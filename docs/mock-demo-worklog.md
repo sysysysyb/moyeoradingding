@@ -37,6 +37,7 @@ The first priority is a stable, reviewer-friendly deployed demo. The goal is not
 | 5. MSW env startup | Done | Enabled MSW only when `VITE_ENABLE_MSW=true`, using Vite env access and existing browser worker. | `src/main.tsx`, `src/vite-env.d.ts`, `.env.example` | Verified together with auth step. |
 | 6. Demo auth mock | Done | Added demo login user and auth handlers for login, mypage profile fetch, and logout. | `src/mocks/data/auth.ts`, `src/mocks/handlers/auth.ts`, `src/mocks/handlers.ts` | Build passed; targeted ESLint passed; login verified. |
 | 7. Search page mock support | Incomplete / needs verification | Current repo state does not confirm wildcard handlers for `/idols/`, `/bookmarks/idols/`, or `/bookmarks/groups/`. `/search` may still hit the backend. | `src/pages/idolSearch/*`, `src/api/idolApi.ts`, `src/api/bookmarkIdolApi.ts`, `src/mocks/handlers.ts` | Not fully verified in current context. |
+| 8. Search MSW handlers | Implemented / needs browser verification | Added in-memory idol bookmark state and MSW handlers for `/search` idol list/search and idol bookmark add/remove. Mocked endpoints: `GET */idols/`, `GET */bookmarks/idols/`, `GET */bookmarks/groups/`, `POST */bookmarks/idols/`, `DELETE */bookmarks/idols/:bookmarkId/`. | `src/mocks/data/bookmarks.ts`, `src/mocks/handlers/bookmarks.ts`, `src/mocks/handlers/idols.ts`, `src/mocks/handlers.ts` | Build passed; targeted ESLint passed. Browser/network verification still needed. |
 
 ## Current Verified Status
 
@@ -45,15 +46,16 @@ The first priority is a stable, reviewer-friendly deployed demo. The goal is not
 - Demo login succeeded with `test@test.com` / `test123!`.
 - No terminal or browser console errors were found during login test.
 - Full lint still has unrelated existing issues.
-- `/search` MSW flow is not fully verified in the current context.
+- Search mock TypeScript files passed targeted ESLint.
+- `/search` MSW browser/network flow is not fully verified in the current context.
 
 ## Remaining Risks
 
-- Missing or unverified `/search` handlers may still allow backend requests.
+- `/search` browser/network behavior still needs verification.
 - Existing old mock paths may not match current API paths.
 - `onUnhandledRequest: 'bypass'` can hide missing mocks.
 - Chat uses WebSocket and remains excluded.
 
 ## Next Step
 
-Verify or complete `/search` MSW support before moving to idol detail and schedule mocks.
+Verify `/search` MSW support before moving to idol detail and schedule mocks.
