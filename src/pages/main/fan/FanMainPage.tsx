@@ -18,6 +18,7 @@ export default function FanMainPage() {
     currentIdol,
     isLoading,
     isError,
+    isNotFound,
     isFavorite,
     handleFavoriteToggle,
     toggleScheduleBookmark,
@@ -59,7 +60,11 @@ export default function FanMainPage() {
   if (!currentIdol) {
     return (
       <div className="flex min-h-[400px] flex-col items-center justify-center gap-4 text-center">
-        <div className="text-gray-500">아이돌 정보를 찾을 수 없습니다.</div>
+        <div className="text-gray-500">
+          {isNotFound
+            ? '아이돌 정보를 찾을 수 없습니다.'
+            : '아이돌 상세 데모를 준비 중입니다.'}
+        </div>
         {fallbackAction}
       </div>
     );
