@@ -41,6 +41,7 @@ The first priority is a stable, reviewer-friendly deployed demo. The goal is not
 | 9. UX/routing inspection    | Planned                                  | Inspected demo login UX, root route behavior, `/search` bookmark removal, and idol detail blank/back behavior before implementation.                                                                                                                                         | `src/pages/Login.tsx`, `src/App.tsx`, `src/pages/idolSearch/useIdolSearch.ts`, `src/pages/main/fan/*`                    | Inspection only.                                                                 |
 | 10. UX stabilization        | Verified                                 | Added demo login button, root redirect for logged-in fan users, stable favorite cards on `/search`, and idol detail loading/error fallback UI.                                                                                                                               | `src/pages/Login.tsx`, `src/App.tsx`, `src/pages/idolSearch/useIdolSearch.ts`, `src/pages/main/fan/*`                    | Build passed; targeted ESLint passed; browser verified.                          |
 | 11. Fan detail crash guard  | Verified                                 | Hardened fan detail data mapping so missing or malformed bookmark/schedule API data does not throw before fallback UI can render.                                                                                                                                            | `src/pages/main/fan/hooks/useFanMainData.ts`, `src/pages/main/fan/FanMainPage.tsx`                                       | Build passed; targeted ESLint passed; browser verified.                          |
+| 12. Idol detail schedules   | Implemented / needs browser verification | Added MSW mocks for idol detail, idol schedules, and schedule bookmark add/remove. Mocked endpoints: `GET */idols/:idolId/`, `GET */idols/:idolId/schedules/`, `GET */schedules/my/`, `POST */schedules/my/`, `DELETE */schedules/my/:bookmarkId/`.                         | `src/mocks/handlers/idols.ts`, `src/mocks/data/schedules.ts`, `src/mocks/handlers/schedules.ts`, `src/mocks/handlers.ts` | Build passed; targeted ESLint passed. Browser verification still needed.         |
 
 ## Current Verified Status
 
@@ -52,6 +53,7 @@ The first priority is a stable, reviewer-friendly deployed demo. The goal is not
 - Search mock TypeScript files passed targeted ESLint.
 - UX stabilization changed files passed targeted ESLint.
 - Fan detail crash guard changed files passed targeted ESLint.
+- Idol detail schedule mock files passed targeted ESLint.
 - Demo login works with `test@test.com` / `test123!`.
 - `/search` requests are handled by MSW and render idol data without console errors.
 - Demo login UX works.
@@ -67,7 +69,7 @@ The first priority is a stable, reviewer-friendly deployed demo. The goal is not
 - Existing old mock paths may not match current API paths.
 - `onUnhandledRequest: 'bypass'` can hide missing mocks.
 - Chat uses WebSocket and remains excluded.
-- Idol detail and schedule MSW handlers are still not implemented.
+- Idol detail and schedule MSW handlers need browser verification.
 
 ## Tooling Note
 
@@ -79,4 +81,4 @@ The first priority is a stable, reviewer-friendly deployed demo. The goal is not
 
 ## Next Step
 
-Prepare idol detail and schedule MSW mocks.
+Browser verify idol detail and schedule bookmark flow.

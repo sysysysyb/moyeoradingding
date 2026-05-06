@@ -43,6 +43,20 @@ const getPaginationUrl = (
 };
 
 export const idolHandlers = [
+  http.get('*/idols/:idolId/', ({ params }) => {
+    const idolId = Number(params.idolId);
+    const idol = MOCK_IDOLS.find(item => item.id === idolId);
+
+    if (!idol) {
+      return HttpResponse.json(
+        { message: '아이돌을 찾을 수 없습니다.' },
+        { status: 404 },
+      );
+    }
+
+    return HttpResponse.json(toIdolListItemResponse(idol));
+  }),
+
   http.get('*/idols/', ({ request }) => {
     const url = new URL(request.url);
     const searchQuery = url.searchParams.get('search')?.trim().toLowerCase();

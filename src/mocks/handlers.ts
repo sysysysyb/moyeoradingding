@@ -4,6 +4,7 @@ import { ALL_SCHEDULES } from './data';
 import { authHandlers } from './handlers/auth';
 import { bookmarkHandlers } from './handlers/bookmarks';
 import { idolHandlers } from './handlers/idols';
+import { scheduleHandlers } from './handlers/schedules';
 // import { CHAT_EXAMPLES } from './data/chats';
 
 // const CHATS_BY_ROOM = {
@@ -44,6 +45,7 @@ export const handlers = [
   ...authHandlers,
   ...bookmarkHandlers,
   ...idolHandlers,
+  ...scheduleHandlers,
 
   http.get('/bookmark/idol', () => {
     return HttpResponse.json([
