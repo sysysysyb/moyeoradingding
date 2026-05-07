@@ -15,6 +15,8 @@ interface PasswordEditProps {
   onCancelEdit: () => void;
 }
 
+const isMockDemo = import.meta.env.VITE_ENABLE_MSW === 'true';
+
 export default function PasswordEdit({ onCancelEdit }: PasswordEditProps) {
   const {
     isVerified,
@@ -46,6 +48,11 @@ export default function PasswordEdit({ onCancelEdit }: PasswordEditProps) {
   return (
     <div className="w-full flex-1 rounded-2xl border border-gray-200 bg-white p-6 shadow-md md:p-10">
       <h2 className="mb-6 text-2xl font-semibold">비밀번호 수정</h2>
+      {isMockDemo && (
+        <p className="mb-4 rounded-lg bg-fuchsia-50 px-4 py-3 text-sm text-fuchsia-700">
+          현재 데모 비밀번호: test123!
+        </p>
+      )}
       <form
         onSubmit={handleSubmit(handleChangePassword, toastFormErrors)}
         className="flex flex-col gap-4"

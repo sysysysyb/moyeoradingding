@@ -43,6 +43,8 @@ The first priority is a stable, reviewer-friendly deployed demo. The goal is not
 | 11. Fan detail crash guard  | Verified                                 | Hardened fan detail data mapping so missing or malformed bookmark/schedule API data does not throw before fallback UI can render.                                                                                                                                            | `src/pages/main/fan/hooks/useFanMainData.ts`, `src/pages/main/fan/FanMainPage.tsx`                                       | Build passed; targeted ESLint passed; browser verified.                          |
 | 12. Idol detail schedules   | Verified                                 | Added MSW mocks for idol detail, idol schedules, and schedule bookmark add/remove. Mocked endpoints: `GET */idols/:idolId/`, `GET */idols/:idolId/schedules/`, `GET */schedules/my/`, `POST */schedules/my/`, `DELETE */schedules/my/:bookmarkId/`.                         | `src/mocks/handlers/idols.ts`, `src/mocks/data/schedules.ts`, `src/mocks/handlers/schedules.ts`, `src/mocks/handlers.ts` | Build passed; targeted ESLint passed; browser verified.                          |
 | 13. My page auth support    | Implemented / needs browser verification | Added lightweight profile edit and password mock APIs for my page. Mocked endpoints: `PATCH */users/mypage/`, `POST */users/password/verify/`, `PATCH */users/password/change/`.                                                                                            | `src/mocks/data/auth.ts`, `src/mocks/handlers/auth.ts`                                                                   | Build passed; targeted ESLint passed. Browser verification still needed.         |
+| 14. Demo form UX polish     | Implemented / needs browser verification | Added mock-demo password hint and kept floating input label font size consistent across states.                                                                                                                                                                               | `src/components/mypage/PasswordEdit.tsx`, `src/components/common/input/input.styles.ts`                                  | Build passed; targeted ESLint passed. Browser verification still needed.         |
+| 15. Floating label alignment | Implemented / needs browser verification | Adjusted empty/unfocused floating label vertical position while preserving consistent font size.                                                                                                                                                                               | `src/components/common/input/input.styles.ts`                                                                            | Build passed; targeted ESLint passed. Browser verification still needed.         |
 
 ## Current Verified Status
 
@@ -56,6 +58,8 @@ The first priority is a stable, reviewer-friendly deployed demo. The goal is not
 - Fan detail crash guard changed files passed targeted ESLint.
 - Idol detail schedule mock files passed targeted ESLint.
 - My page auth mock files passed targeted ESLint.
+- Demo form UX polish files passed targeted ESLint.
+- Floating label alignment file passed targeted ESLint.
 - Idol detail renders without console errors.
 - Idol detail calendar/list schedules render.
 - Schedule bookmark `POST`/`DELETE` requests are handled by MSW.
@@ -76,6 +80,7 @@ The first priority is a stable, reviewer-friendly deployed demo. The goal is not
 - `onUnhandledRequest: 'bypass'` can hide missing mocks.
 - Chat uses WebSocket and remains excluded.
 - My page flows still need review and verification.
+- Demo form UX polish needs browser verification.
 
 ## Tooling Note
 
