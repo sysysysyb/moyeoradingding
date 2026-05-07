@@ -28,3 +28,21 @@ export const getUserIdFromAccessToken = (token: string) => {
   const match = token.match(/^mock-access-token-(\d+)$/);
   return match ? Number(match[1]) : null;
 };
+
+export const updateDemoUserProfile = (profile: {
+  nickname?: string;
+  profile_image_url?: string;
+}) => {
+  if (profile.nickname) {
+    DEMO_AUTH_USER.nickname = profile.nickname;
+  }
+
+  if (profile.profile_image_url) {
+    DEMO_AUTH_USER.profile_image_url = profile.profile_image_url;
+  }
+
+  return {
+    nickname: DEMO_AUTH_USER.nickname,
+    profile_image_url: DEMO_AUTH_USER.profile_image_url,
+  };
+};
