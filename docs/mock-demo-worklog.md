@@ -47,6 +47,8 @@ The first priority is a stable, reviewer-friendly deployed demo. The goal is not
 | 15. Floating label alignment | Implemented / needs browser verification | Adjusted empty/unfocused floating label vertical position while preserving consistent font size.                                                                                                                                                                               | `src/components/common/input/input.styles.ts`                                                                            | Build passed; targeted ESLint passed. Browser verification still needed.         |
 | 16. Schedule data sorting UX | Implemented / needs browser verification | Added previous/current/next month schedule mock data and sorted my schedule bookmarks by `schedule_details.start_time` before mapping.                                                                                                                                         | `src/hooks/useMyScheduleData.ts`, `src/mocks/data/schedules.ts`                                                          | Build passed; targeted ESLint passed. Browser verification still needed.         |
 | 17. Schedule data follow-up | Implemented / needs browser verification | Expanded schedules to 15 idol-specific items per idol with unique real schedule IDs, and made my schedule month arrows select the first bookmarked schedule in the newly visible month.                                                                                       | `src/mocks/data/schedules.ts`, `src/pages/MySchedule.tsx`, `src/components/common/calendar/Calendar.tsx`                 | Build passed; targeted ESLint passed. Browser verification still needed.         |
+| 18. Favorite idol card polish | Implemented / needs browser verification | Removed the image baseline/layout gap that could show gray space below favorite idol cards while preserving card size and hover behavior.                                                                                                                                      | `src/components/common/card/IdolCard.tsx`                                                                                | Build passed; targeted ESLint passed. Browser verification still needed.         |
+| 19. Favorite section follow-up | Implemented / needs browser verification | Removed the forced desktop scrollbar track from favorite card rows; the remaining gray line came from the row wrapper, not the card image.                                                                                                                                     | `src/components/mypage/FavoriteSection.tsx`                                                                              | Build passed; targeted ESLint passed. Browser verification still needed.         |
 
 ## Current Verified Status
 
@@ -64,6 +66,8 @@ The first priority is a stable, reviewer-friendly deployed demo. The goal is not
 - Floating label alignment file passed targeted ESLint.
 - Schedule data sorting UX files passed targeted ESLint.
 - Schedule data/month navigation follow-up files passed targeted ESLint.
+- Favorite idol card polish file passed targeted ESLint.
+- Favorite section follow-up file passed targeted ESLint.
 - Idol detail renders without console errors.
 - Idol detail calendar/list schedules render.
 - Schedule bookmark `POST`/`DELETE` requests are handled by MSW.
@@ -86,6 +90,8 @@ The first priority is a stable, reviewer-friendly deployed demo. The goal is not
 - My page flows still need review and verification.
 - Demo form UX polish needs browser verification.
 - Schedule data/month navigation follow-up needs browser verification.
+- Favorite idol card layout polish needs browser verification.
+- Favorite section scrollbar follow-up needs browser verification.
 
 ## Tooling Note
 
@@ -97,4 +103,4 @@ The first priority is a stable, reviewer-friendly deployed demo. The goal is not
 
 ## Next Step
 
-Browser verify my page profile and my schedule month navigation flows.
+Browser verify my page profile favorite idol cards and my schedule month navigation flows.

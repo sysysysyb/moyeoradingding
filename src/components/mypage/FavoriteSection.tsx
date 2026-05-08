@@ -32,7 +32,7 @@ export default function FavoriteSection<T>({
 
       {items.length > 0 ? (
         <div
-          className="flex w-full flex-col flex-wrap items-center gap-4 md:flex-row md:flex-nowrap md:overflow-x-scroll"
+          className="flex w-full flex-col flex-wrap items-center gap-4 md:flex-row md:flex-nowrap md:overflow-x-auto"
           ref={containerRef}
           {...(isDesktop ? events : {})}
         >

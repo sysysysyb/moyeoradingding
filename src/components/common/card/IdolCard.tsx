@@ -31,7 +31,7 @@ function IdolCard({
   return (
     <div
       className={clsx(
-        'group relative h-89 w-72 cursor-pointer rounded-lg shadow-2xl',
+        'group relative h-89 w-72 cursor-pointer overflow-hidden rounded-lg bg-white shadow-2xl',
         className,
       )}
       {...rest}
@@ -40,10 +40,10 @@ function IdolCard({
         <img
           src={imageSrc}
           alt={title}
-          className="h-full w-full rounded-lg object-cover"
+          className="block h-full w-full object-cover"
         />
       ) : (
-        <div className="flex h-full w-full items-center justify-center rounded-lg bg-neutral-200">
+        <div className="flex h-full w-full items-center justify-center bg-neutral-200">
           <UserIcon className="h-20 w-20 fill-neutral-100 text-neutral-500" />
         </div>
       )}
