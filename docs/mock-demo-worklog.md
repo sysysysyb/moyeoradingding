@@ -45,6 +45,7 @@ The first priority is a stable, reviewer-friendly deployed demo. The goal is not
 | 13. My page auth support    | Implemented / needs browser verification | Added lightweight profile edit and password mock APIs for my page. Mocked endpoints: `PATCH */users/mypage/`, `POST */users/password/verify/`, `PATCH */users/password/change/`.                                                                                            | `src/mocks/data/auth.ts`, `src/mocks/handlers/auth.ts`                                                                   | Build passed; targeted ESLint passed. Browser verification still needed.         |
 | 14. Demo form UX polish     | Implemented / needs browser verification | Added mock-demo password hint and kept floating input label font size consistent across states.                                                                                                                                                                               | `src/components/mypage/PasswordEdit.tsx`, `src/components/common/input/input.styles.ts`                                  | Build passed; targeted ESLint passed. Browser verification still needed.         |
 | 15. Floating label alignment | Implemented / needs browser verification | Adjusted empty/unfocused floating label vertical position while preserving consistent font size.                                                                                                                                                                               | `src/components/common/input/input.styles.ts`                                                                            | Build passed; targeted ESLint passed. Browser verification still needed.         |
+| 16. Schedule data sorting UX | Implemented / needs browser verification | Added previous/current/next month schedule mock data and sorted my schedule bookmarks by `schedule_details.start_time` before mapping.                                                                                                                                         | `src/hooks/useMyScheduleData.ts`, `src/mocks/data/schedules.ts`                                                          | Build passed; targeted ESLint passed. Browser verification still needed.         |
 
 ## Current Verified Status
 
@@ -60,6 +61,7 @@ The first priority is a stable, reviewer-friendly deployed demo. The goal is not
 - My page auth mock files passed targeted ESLint.
 - Demo form UX polish files passed targeted ESLint.
 - Floating label alignment file passed targeted ESLint.
+- Schedule data sorting UX files passed targeted ESLint.
 - Idol detail renders without console errors.
 - Idol detail calendar/list schedules render.
 - Schedule bookmark `POST`/`DELETE` requests are handled by MSW.
@@ -81,6 +83,7 @@ The first priority is a stable, reviewer-friendly deployed demo. The goal is not
 - Chat uses WebSocket and remains excluded.
 - My page flows still need review and verification.
 - Demo form UX polish needs browser verification.
+- Schedule data sorting UX needs browser verification.
 
 ## Tooling Note
 

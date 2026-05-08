@@ -21,7 +21,13 @@ export function useMyScheduleData() {
   });
 
   const mySchedules: Schedule[] = useMemo(() => {
-    return (data ?? []).map(bookmark => {
+    const sortedBookmarks = [...(data ?? [])].sort((a, b) =>
+      a.schedule_details.start_time.localeCompare(
+        b.schedule_details.start_time,
+      ),
+    );
+
+    return sortedBookmarks.map(bookmark => {
       const scheduleContent: RawScheduleContent = bookmark.schedule_details; // Access schedule_details
 
       const baseSchedule = {
