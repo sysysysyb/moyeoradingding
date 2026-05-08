@@ -4,7 +4,7 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import {
   addBookmarkIdol,
@@ -19,6 +19,13 @@ import { avatarOf } from '@/utils/avatar';
 export function useIdolSearch(debouncedSearchQuery: string) {
   const queryClient = useQueryClient();
   const { favorites, toggleFavorite } = useFavoritesStore();
+  const [displayFavoriteIdols, setDisplayFavoriteIdols] = useState<
+    {
+      id: string;
+      name: string;
+      avatarUrl: string;
+    }[]
+  >([]);
 
   const { data: bookmarkedRaw, isLoading: isFavoritesLoading } = useQuery({
     queryKey: ['idols', 'favorites'],
@@ -34,6 +41,16 @@ export function useIdolSearch(debouncedSearchQuery: string) {
       })),
     [bookmarkedRaw],
   );
+
+  useEffect(() => {
+    if (!favoriteIdols.length) return;
+
+    setDisplayFavoriteIdols(prev => {
+      const prevIds = new Set(prev.map(idol => idol.id));
+      const newItems = favoriteIdols.filter(idol => !prevIds.has(idol.id));
+      return newItems.length ? [...prev, ...newItems] : prev;
+    });
+  }, [favoriteIdols]);
 
   const {
     data: searchData,
@@ -92,11 +109,11 @@ export function useIdolSearch(debouncedSearchQuery: string) {
   );
 
   const isSearching = debouncedSearchQuery.trim().length > 0;
-  const idolsToDisplay = isSearching ? flatSearchIdols : favoriteIdols;
+  const idolsToDisplay = isSearching ? flatSearchIdols : displayFavoriteIdols;
 
-  const hasFavorites = (favoriteIdols?.length ?? 0) > 0;
+  const hasFavorites = displayFavoriteIdols.length > 0;
   const shouldShowEmptyFavorites =
-    !isSearching && !isFavoritesLoading && (favoriteIdols?.length ?? 0) === 0;
+    !isSearching && !isFavoritesLoading && displayFavoriteIdols.length === 0;
 
   return {
     idolsToDisplay,

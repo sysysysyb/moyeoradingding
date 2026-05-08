@@ -16,6 +16,9 @@ export default function FanMainPage() {
     setSelectedDate,
     filteredSchedules,
     currentIdol,
+    isLoading,
+    isError,
+    isNotFound,
     isFavorite,
     handleFavoriteToggle,
     toggleScheduleBookmark,
@@ -23,10 +26,46 @@ export default function FanMainPage() {
 
   const handleSearchClick = () => navigate('/search');
 
+  const fallbackAction = (
+    <Button onClick={handleSearchClick} variant="primary" shape="pill">
+      아이돌 검색으로 돌아가기
+    </Button>
+  );
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-[400px] flex-col items-center justify-center gap-4 text-center">
+        <div className="text-gray-500">아이돌 정보를 불러오는 중입니다.</div>
+        {fallbackAction}
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="flex min-h-[400px] flex-col items-center justify-center gap-4 text-center">
+        <div>
+          <p className="font-semibold text-gray-700">
+            아이돌 상세 데모를 준비 중입니다.
+          </p>
+          <p className="mt-2 text-sm text-gray-500">
+            검색 페이지로 돌아가 다른 아이돌을 둘러볼 수 있어요.
+          </p>
+        </div>
+        {fallbackAction}
+      </div>
+    );
+  }
+
   if (!currentIdol) {
     return (
-      <div className="flex min-h-[400px] items-center justify-center">
-        <div className="text-gray-500">아이돌 정보를 찾을 수 없습니다.</div>
+      <div className="flex min-h-[400px] flex-col items-center justify-center gap-4 text-center">
+        <div className="text-gray-500">
+          {isNotFound
+            ? '아이돌 정보를 찾을 수 없습니다.'
+            : '아이돌 상세 데모를 준비 중입니다.'}
+        </div>
+        {fallbackAction}
       </div>
     );
   }

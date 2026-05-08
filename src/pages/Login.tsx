@@ -17,6 +17,12 @@ const USER_TYPE = [
   { id: 'IDOL', label: '아이돌' },
 ];
 
+const DEMO_ACCOUNT = {
+  userType: 'NORMAL' as const,
+  email: 'test@test.com',
+  password: 'test123!',
+};
+
 export default function Login() {
   const { submit, isLoading } = useLogin();
 
@@ -29,6 +35,17 @@ export default function Login() {
   });
 
   const { register } = form;
+
+  const handleDemoLogin = () => {
+    form.setValue('userType', DEMO_ACCOUNT.userType, { shouldValidate: true });
+    form.setValue('email', DEMO_ACCOUNT.email, { shouldValidate: true });
+    form.setValue('password', DEMO_ACCOUNT.password, {
+      shouldValidate: true,
+    });
+
+    const submitDemoAccount = form.handleSubmit(submit, toastFormErrors);
+    submitDemoAccount();
+  };
 
   return (
     <div className="flex flex-col gap-2">
@@ -58,6 +75,21 @@ export default function Login() {
         <Input type="email" label="이메일" {...register('email')} />
 
         <Input type="password" label="비밀번호" {...register('password')} />
+
+        <div className="mt-4 rounded-lg border border-fuchsia-100 bg-fuchsia-50 p-4 text-sm text-gray-700">
+          <p className="font-semibold text-fuchsia-700">포트폴리오 데모 계정</p>
+          <p className="mt-1">일반 회원(팬) 계정으로 바로 둘러볼 수 있어요.</p>
+          <Button
+            type="button"
+            variant="secondary"
+            size="md"
+            className="mt-3 w-full font-semibold"
+            onClick={handleDemoLogin}
+            disabled={isLoading}
+          >
+            데모 계정으로 로그인
+          </Button>
+        </div>
 
         <div className="my-8 flex flex-col gap-4">
           <Button

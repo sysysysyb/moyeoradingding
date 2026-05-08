@@ -23,34 +23,52 @@ export function useFanMainData() {
   const { favoriteIdols } = useBookmarkSync();
   const queryClient = useQueryClient();
 
-  const { data: idolDetail } = useQuery({
+  const {
+    data: idolDetail,
+    isLoading: isIdolDetailLoading,
+    isError: isIdolDetailError,
+  } = useQuery({
     queryKey: ['idol', 'detail', parsedIdolId],
     enabled: Number.isFinite(parsedIdolId) && parsedIdolId > 0,
     queryFn: () => fetchIdolDetail(parsedIdolId),
   });
 
-  const { data: idolSchedulesFromApi } = useQuery({
+  const {
+    data: idolSchedulesFromApi,
+    isLoading: isIdolSchedulesLoading,
+    isError: isIdolSchedulesError,
+  } = useQuery({
     queryKey: ['idol', 'schedules', parsedIdolId],
     enabled: Number.isFinite(parsedIdolId) && parsedIdolId > 0,
     queryFn: () => fetchIdolSchedules(parsedIdolId),
   });
 
-  const { data: rawBookmarkedSchedules } = useQuery({
+  const {
+    data: rawBookmarkedSchedules,
+    isLoading: isBookmarkedSchedulesLoading,
+    isError: isBookmarkedSchedulesError,
+  } = useQuery({
     queryKey: ['myBookmarkEntries'],
     queryFn: getBookmarkSchedules,
   });
 
+  const bookmarkedSchedules = useMemo(() => {
+    return Array.isArray(rawBookmarkedSchedules) ? rawBookmarkedSchedules : [];
+  }, [rawBookmarkedSchedules]);
+
   const bookmarkedScheduleIds = useMemo(() => {
     return new Set(
-      rawBookmarkedSchedules?.map(s => s.schedule_details.id) ?? [],
+      bookmarkedSchedules
+        .map(schedule => schedule?.schedule_details?.id)
+        .filter((id): id is number => typeof id === 'number'),
     );
-  }, [rawBookmarkedSchedules]);
+  }, [bookmarkedSchedules]);
 
   const { mutate: toggleScheduleBookmark } = useMutation({
     mutationFn: async (schedule: Schedule) => {
       if (schedule.isBookmarked) {
-        const bookmarkEntry = rawBookmarkedSchedules?.find(
-          entry => entry.schedule_details.id === schedule.realScheduleId,
+        const bookmarkEntry = bookmarkedSchedules.find(
+          entry => entry?.schedule_details?.id === schedule.realScheduleId,
         );
         if (bookmarkEntry) {
           await removeMySchedule(bookmarkEntry.id);
@@ -99,27 +117,29 @@ export function useFanMainData() {
       return;
     }
 
-    const mappedFromApi: Schedule[] = (idolSchedulesFromApi ?? []).map(
-      (it: any) => ({
-        id: it.id ?? Math.random(),
-        title: it.title ?? '',
-        startTime: it.start_time ?? it.startTime ?? '',
-        endTime: it.end_time ?? it.endTime ?? '',
-        description: it.description ?? '',
-        isPublic: Boolean(it.is_public ?? it.isPublic ?? true),
-        idol: { id: currentIdol.id, name: currentIdol.name },
-        location: it.location ?? '',
-        isBookmarked: bookmarkedScheduleIds.has(it.id),
-        realScheduleId: it.id,
-      }),
-    ) as Schedule[];
+    const idolSchedules = Array.isArray(idolSchedulesFromApi)
+      ? idolSchedulesFromApi
+      : [];
+
+    const mappedFromApi: Schedule[] = idolSchedules.map((it: any) => ({
+      id: it.id ?? Math.random(),
+      title: it.title ?? '',
+      startTime: it.start_time ?? it.startTime ?? '',
+      endTime: it.end_time ?? it.endTime ?? '',
+      description: it.description ?? '',
+      isPublic: Boolean(it.is_public ?? it.isPublic ?? true),
+      idol: { id: currentIdol.id, name: currentIdol.name },
+      location: it.location ?? '',
+      isBookmarked: bookmarkedScheduleIds.has(it.id),
+      realScheduleId: it.id,
+    })) as Schedule[];
 
     setFilteredSchedules(mappedFromApi);
   }, [currentIdol, idolSchedulesFromApi, bookmarkedScheduleIds]);
 
   const handleFavoriteToggle = useCallback(() => {
     if (parsedIdolId) toggleFavorite(parsedIdolId);
-  }, [parsedIdolId, toggleFavorite]);
+  }, [parsedIdolId]);
 
   return {
     idolId: parsedIdolId,
@@ -127,6 +147,18 @@ export function useFanMainData() {
     setSelectedDate,
     filteredSchedules,
     currentIdol,
+    isLoading:
+      isIdolDetailLoading ||
+      isIdolSchedulesLoading ||
+      isBookmarkedSchedulesLoading,
+    isError:
+      isIdolDetailError || isIdolSchedulesError || isBookmarkedSchedulesError,
+    isNotFound:
+      !isIdolDetailLoading &&
+      !isIdolDetailError &&
+      Number.isFinite(parsedIdolId) &&
+      parsedIdolId > 0 &&
+      !currentIdol,
     isFavorite,
     handleFavoriteToggle,
     toggleScheduleBookmark,

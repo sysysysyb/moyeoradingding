@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import dayjs, { Dayjs } from 'dayjs';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { addMySchedule, removeMySchedule } from '@/api/bookmarkScheduleApi';
 import Calendar from '@/components/common/calendar/Calendar';
@@ -44,11 +44,29 @@ export default function MySchedule() {
     );
   }, [mySchedules, selectedDate]);
 
+  const getFirstScheduleDateInMonth = useCallback(
+    (date: Dayjs) => {
+      const firstSchedule = mySchedules.find(schedule =>
+        dayjs(schedule.startTime).isSame(date, 'month'),
+      );
+
+      return firstSchedule
+        ? dayjs(firstSchedule.startTime).startOf('day')
+        : date.startOf('month');
+    },
+    [mySchedules],
+  );
+
   const handleCalendarDateChange = (date: Dayjs) => {
     setSelectedDate(date);
     if (!date.isSame(viewDate, 'month')) {
       setViewDate(date);
     }
+  };
+
+  const handleCalendarMonthChange = (date: Dayjs) => {
+    setViewDate(date);
+    setSelectedDate(getFirstScheduleDateInMonth(date));
   };
 
   if (isLoading) {
@@ -67,6 +85,7 @@ export default function MySchedule() {
       <Calendar
         selectedDate={selectedDate}
         onDateChange={handleCalendarDateChange}
+        onViewDateChange={handleCalendarMonthChange}
         schedules={monthlySchedules}
       />
       <DateScheduleList

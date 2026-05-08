@@ -10,10 +10,16 @@ import CalendarWeekDays from './CalendarWeekDays';
 interface CalendarProps {
   selectedDate: Dayjs;
   onDateChange: (date: Dayjs) => void;
+  onViewDateChange?: (date: Dayjs) => void;
   schedules: Schedule[];
 }
 
-function Calendar({ selectedDate, onDateChange, schedules }: CalendarProps) {
+function Calendar({
+  selectedDate,
+  onDateChange,
+  onViewDateChange,
+  schedules,
+}: CalendarProps) {
   const [viewDate, setViewDate] = useState(selectedDate);
 
   const viewDates = useMemo(() => {
@@ -46,11 +52,19 @@ function Calendar({ selectedDate, onDateChange, schedules }: CalendarProps) {
   }, [schedules]);
 
   const handleMovePrevMonth = () => {
-    setViewDate(prev => prev.add(-1, 'month'));
+    setViewDate(prev => {
+      const next = prev.add(-1, 'month');
+      onViewDateChange?.(next.startOf('month'));
+      return next;
+    });
   };
 
   const handleMoveNextMonth = () => {
-    setViewDate(prev => prev.add(1, 'month'));
+    setViewDate(prev => {
+      const next = prev.add(1, 'month');
+      onViewDateChange?.(next.startOf('month'));
+      return next;
+    });
   };
 
   const handleMoveCurrentMonth = () => {
