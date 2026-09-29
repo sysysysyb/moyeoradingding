@@ -1,24 +1,24 @@
 # Workflow Status
 
-> Updated: 2026-09-30 01:27 KST
+> Updated: 2026-09-30 01:42 KST
 
 ## Current state
 
 * Status: ready
-* Stage: Pull Request merge
+* Stage: Awaiting next Issue selection
 
 ## Active work
 
-* Issue: [#2 스킬 저장소 설정 정리](https://github.com/sysysysyb/moyeoradingding/issues/2)
-* Branch: `chore/2-matt-skills-setup`
-* Pull Request: [#3](https://github.com/sysysysyb/moyeoradingding/pull/3)
-* Plan: User-approved `AGENTS.md` and worklog migration plan
+* Issue: None
+* Branch: `dev`
+* Pull Request: None
+* Plan: None
 * Design: None
 
 ## Current checkpoint
 
-* Last completed: Resolved the final PR review findings and received merge approval
-* Latest verification: `git diff --cached --check` and PR checks — passed
+* Last completed: Documented rebase merging and the trivial follow-up workflow in a local `dev` commit
+* Latest verification: branch and commit topology — `dev` is one local commit ahead of `origin/dev`
 
 ## Review focus
 
@@ -26,7 +26,7 @@
 
 ## Remaining risk
 
-* The deployed skills CLI currently requires `experimental_install`; the upstream-removed local skill remains ignored and outside the lockfile.
+* Local `dev` contains one unpushed documentation commit intended for the next approved Issue branch.
 
 ## Blockers
 
@@ -34,5 +34,5 @@
 
 ## Next action
 
-* Owner: Codex
-* Action: Commit, push, and merge PR #3.
+* Owner: User
+* Action: Select and explicitly start the next Issue.
