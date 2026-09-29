@@ -24,4 +24,13 @@ dist-ssr
 *.sw?
 .vite
 
-.env.local
+# Project-installed agent skill payloads
+.agents/skills/
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# Vercel local project metadata
+.vercel/
