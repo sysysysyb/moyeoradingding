@@ -50,6 +50,10 @@ Use npm and the tracked `package-lock.json`. Treat a package-manager change as s
 
 A low-risk, single-purpose copy or configuration change with an obvious verification method does not require a full planning flow. Inspect the affected source, state the scope and verification method, make the smallest change, and verify it.
 
+After merging a Pull Request, switch to and fast-forward `dev`.
+
+A user-approved trivial follow-up that does not justify its own Issue or Pull Request may be committed locally on `dev` and carried into the next approved Issue branch. Do not push the commit directly to `dev`, and omit an Issue number unless the change actually belongs to that Issue.
+
 ### Single-session work
 
 For work that fits in one session, agree with the user on the scope and verification method before implementation.
@@ -98,7 +102,7 @@ Do not publish unverified performance, usage, or reliability claims.
 
 Preserve the existing project structure unless the approved Issue requires a change.
 
-Keep changes scoped to the active Issue and avoid unrelated cleanup.
+Keep changes scoped to the active Issue. The only permitted additional scope is a user-approved trivial follow-up carried into the branch under `Trivial changes`; report it separately in the Pull Request.
 
 Reuse existing types and utilities before adding new ones.
 
@@ -172,3 +176,5 @@ Keep one logical change per commit and keep commit titles concise.
 Stage and commit each `status.md` update with the related work that produced the checkpoint. Do not create a standalone commit for `status.md`.
 
 When requesting approval before committing and pushing, show the exact proposed commit message.
+
+Use rebase merge for Pull Requests unless the user explicitly approves another merge method.
