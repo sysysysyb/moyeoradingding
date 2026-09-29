@@ -168,3 +168,7 @@ Do not push, create a Pull Request, merge, close an Issue, or start another Issu
 Use Conventional Commits with an appropriate Gitmoji.
 
 Keep one logical change per commit and keep commit titles concise.
+
+Stage and commit each `status.md` update with the related work that produced the checkpoint. Do not create a standalone commit for `status.md`.
+
+When requesting approval before committing and pushing, show the exact proposed commit message.
