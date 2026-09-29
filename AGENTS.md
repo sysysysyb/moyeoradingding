@@ -14,6 +14,10 @@ This order does not authorize silently resolving contradictions. Report the conf
 
 ## Repository references
 
+### Project skills
+
+If `.agents/skills/` is missing, restore the locked project skills with `npx --yes skills experimental_install`.
+
 ### Issue and pull request work
 
 GitHub Issues authorize and track repository work. Read `docs/agents/issue-tracker.md` before creating, updating, implementing, or closing an Issue, or creating or updating a Pull Request.
