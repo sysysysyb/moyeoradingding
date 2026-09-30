@@ -1,32 +1,34 @@
 # Workflow Status
 
-> Updated: 2026-09-30 01:42 KST
+> Updated: 2026-09-30 13:44 KST
 
 ## Current state
 
-* Status: ready
-* Stage: Awaiting next Issue selection
+* Status: review
+* Stage: Pull Request #12 open; awaiting review
 
 ## Active work
 
-* Issue: None
-* Branch: `dev`
-* Pull Request: None
-* Plan: None
+* Issue: [#5](https://github.com/sysysysyb/moyeoradingding/issues/5)
+* Branch: `refactor/5-eslint-typescript-lint`
+* Pull Request: [#12](https://github.com/sysysysyb/moyeoradingding/pull/12)
+* Plan: [Approved Spec #4](https://github.com/sysysysyb/moyeoradingding/issues/4)
 * Design: None
 
 ## Current checkpoint
 
-* Last completed: Documented rebase merging and the trivial follow-up workflow in a local `dev` commit
-* Latest verification: branch and commit topology — `dev` is one local commit ahead of `origin/dev`
+* Last completed: Pushed Issue #5 and opened Pull Request #12
+* Latest verification: configuration ESLint, package deduplication check, and `npm run build` — passed; full `npm run lint` — failed at the recorded baseline (17,974 errors, 2 warnings)
 
 ## Review focus
 
-* None
+* `.eslintrc.cjs::module.exports` — Airbnb and official TypeScript rule composition
+* `package.json::devDependencies` — v8 package alignment and removals
+* `CONTEXT.md::NORMAL demo account` — approved trivial carry-in
 
 ## Remaining risk
 
-* Local `dev` contains one unpushed documentation commit intended for the next approved Issue branch.
+* `npm audit --omit=dev` reports 9 advisories; observed static-demo paths do not expose the known attack inputs, so dependency refresh is deferred.
 
 ## Blockers
 
@@ -35,4 +37,4 @@
 ## Next action
 
 * Owner: User
-* Action: Select and explicitly start the next Issue.
+* Action: Review Pull Request #12.
