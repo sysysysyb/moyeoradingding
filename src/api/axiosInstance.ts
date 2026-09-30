@@ -3,9 +3,8 @@ import axios, {
   type InternalAxiosRequestConfig,
 } from 'axios';
 
+import { API_BASE_URL } from '@/api/config';
 import { useUserStore } from '@/stores/userStore';
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const axiosInstance: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
@@ -58,7 +57,7 @@ axiosInstance.interceptors.response.use(
 
       if (refreshToken) {
         try {
-          const response = await axios.post('/api/v1/auth/refresh/', {
+          const response = await axios.post(`${API_BASE_URL}/auth/refresh/`, {
             refresh: refreshToken,
           });
 
