@@ -12,6 +12,10 @@ _Avoid_: Production service, full production replica
 An approved user journey that must remain usable without the retired production backend or optional external services.
 _Avoid_: Every route, full feature set
 
+**NORMAL demo account**:
+The authentication role for a general member presented to users as a fan account.
+_Avoid_: FAN role, fan authentication role
+
 **Optional demo feature**:
 An approved feature outside the core demo flow whose supporting service may be unavailable without making the core demo unusable.
 _Avoid_: Core flow
