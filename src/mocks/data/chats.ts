@@ -1,3 +1,7 @@
+import type { ChatMessage } from '@/pages/chat/chat.types';
+
+import { getDemoUserById } from './auth';
+
 const MANAGER_PROFILE_IMAGE = 'https://picsum.photos/id/237/300/300';
 
 export const CHAT_EXAMPLES = [
@@ -144,3 +148,68 @@ export const CHAT_EXAMPLES = [
     sendAt: '2025-08-19T06:10:05Z',
   },
 ];
+
+export const CHAT_FIXTURE_VERSION = '1';
+export const CHAT_REPLY_SEED = 20260930;
+export const CHAT_ROOM_ID = 1;
+
+const CHAT_REPLY_CANDIDATES = [
+  '확인했어요! 일정도 함께 살펴볼게요.',
+  '좋아요. 필요한 내용은 이 채팅에 남겨주세요.',
+  '알려줘서 고마워요. 곧 다시 확인해드릴게요.',
+  '네, 준비해둘게요. 변경 사항이 있으면 말씀해주세요.',
+  '메시지 받았어요! 함께 진행해요 🙌',
+];
+
+let messages: ChatMessage[] = CHAT_EXAMPLES.map((example, index) => {
+  const user = getDemoUserById(example.sender.id === 'manager-01' ? 3 : 2)!;
+  return {
+    id: index + 1,
+    sender: {
+      id: user.id,
+      nickname: user.nickname,
+      role: user.role as 'MANAGER' | 'IDOL',
+      profile_image_url: user.profile_image_url,
+    },
+    content: example.content,
+    sent_at: example.sendAt,
+  };
+});
+let replyCount = 0;
+
+export const getMockChatMessages = () => messages;
+
+export const addMockChatMessage = (userId: number, content: string) => {
+  const user = getDemoUserById(userId);
+  const replyUser = getDemoUserById(userId === 3 ? 2 : 3);
+  if (!user || !replyUser) return null;
+
+  const sentAt = Date.now();
+  const createMessage = (
+    sender: typeof user,
+    text: string,
+    offset: number,
+  ): ChatMessage => ({
+    id: messages.length + offset,
+    sender: {
+      id: sender.id,
+      nickname: sender.nickname,
+      role: sender.role as ChatMessage['sender']['role'],
+      profile_image_url: sender.profile_image_url,
+    },
+    content: text,
+    sent_at: new Date(sentAt + offset * 1000).toISOString(),
+  });
+
+  const message = createMessage(user, content, 1);
+  const reply = createMessage(
+    replyUser,
+    CHAT_REPLY_CANDIDATES[
+      (CHAT_REPLY_SEED + replyCount * 7) % CHAT_REPLY_CANDIDATES.length
+    ],
+    2,
+  );
+  replyCount += 1;
+  messages = [...messages, message, reply];
+  return { message, reply };
+};

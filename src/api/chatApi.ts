@@ -1,7 +1,16 @@
+import type {
+  ChatMessage,
+  ChatParticipant,
+  PaginatedResponse,
+} from '@/pages/chat/chat.types';
+
 import axiosInstance from './axiosInstance';
 
 export const getMyChatRoomListAPI = async () => {
-  const res = await axiosInstance.get('/chats/rooms/');
+  const res =
+    await axiosInstance.get<
+      PaginatedResponse<{ id: number; room_name: string }>
+    >('/chats/rooms/');
   return res.data;
 };
 
@@ -61,7 +70,7 @@ export const leaveChatRoomAPI = async (roomId: number, roomName: string) => {
 };
 
 export const getChatMessageAPI = async (roomId: number, page: number) => {
-  const res = await axiosInstance.get(
+  const res = await axiosInstance.get<PaginatedResponse<ChatMessage>>(
     `/chats/rooms/${roomId}/messages/?page=${page}`,
   );
   return res.data;
@@ -71,9 +80,17 @@ export const getChatRoomParticipantsAPI = async (
   roomId: number,
   page: number,
 ) => {
-  const res = await axiosInstance.get(
+  const res = await axiosInstance.get<PaginatedResponse<ChatParticipant>>(
     `/chats/rooms/${roomId}/participants/?page=${page}`,
   );
+  return res.data;
+};
+
+export const sendChatMessageAPI = async (roomId: number, content: string) => {
+  const res = await axiosInstance.post<{
+    message: ChatMessage;
+    reply: ChatMessage;
+  }>(`/chats/rooms/${roomId}/messages/`, { content });
   return res.data;
 };
 

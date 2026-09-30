@@ -14,19 +14,19 @@ const axiosInstance: AxiosInstance = axios.create({
   },
 });
 
+const publicApis = ['/users/login/', '/users/signup/'];
+
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const newConfig = { ...config };
     const { accessToken } = useUserStore.getState();
 
     // 로그인, 회원가입 등 토큰이 필요 없는 API
-    const publicApis = ['/users/login', '/users/signup/'];
-
     if (newConfig.url && publicApis.includes(newConfig.url)) {
       return newConfig;
     }
 
-    if (accessToken) {
+    if (accessToken && !newConfig.headers.Authorization) {
       newConfig.headers.Authorization = `Bearer ${accessToken}`;
     }
 
@@ -49,6 +49,7 @@ axiosInstance.interceptors.response.use(
     if (
       error.response?.status === 401 &&
       !originalRequest.isRetry &&
+      !publicApis.includes(originalRequest.url) &&
       !excludedApis.includes(originalRequest.url)
     ) {
       originalRequest.isRetry = true;

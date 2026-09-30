@@ -1,34 +1,34 @@
 # Workflow Status
 
-> Updated: 2026-09-30 21:15 KST
+> Updated: 2026-09-30 23:04 KST
 
 ## Current state
 
 * Status: review
-* Stage: Pull Request #14 open; awaiting review
+* Stage: Issue #8 local implementation committed; awaiting user review
 
 ## Active work
 
-* Issue: [#7](https://github.com/sysysysyb/moyeoradingding/issues/7)
-* Branch: `fix/7-msw-http-demo`
-* Pull Request: [#14](https://github.com/sysysysyb/moyeoradingding/pull/14)
+* Issue: [#8](https://github.com/sysysysyb/moyeoradingding/issues/8)
+* Branch: `feat/8-mock-chat`
+* Pull Request: None
 * Plan: [Approved Spec #4](https://github.com/sysysysyb/moyeoradingding/issues/4)
 * Design: None
 
 ## Current checkpoint
 
-* Last completed: Pushed the Issue #7 branch and opened Pull Request #14
-* Latest verification: default development, explicit opt-out, production build, and production-preview role flows — passed
+* Last completed: Resolved code-review findings and checked production preview Chat refresh
+* Latest verification: Build, changed-file ESLint, three-role browser flows, and production preview passed; full lint failed on 15,370 existing-format errors
 
 ## Review focus
 
-* `src/main.tsx::enableMocking` — MSW defaults on and only explicit `false` disables it
-* `src/mocks/handlers/schedules.ts::scheduleHandlers` — exact API paths cover IDOL and NORMAL schedule flows
-* `src/mocks/handlers.ts::handlers` — root module contains composition only
+* `src/pages/Login.tsx::Login` — three role buttons and responsive card
+* `src/mocks/handlers/chats.ts::chatHandlers` — HTTP Chat contract and validation
+* `src/api/axiosInstance.ts::request interceptor` — preserve the new login token
 
 ## Remaining risk
 
-* `npm audit --omit=dev` reports 9 advisories; observed static-demo paths do not expose the known attack inputs, so dependency refresh is deferred.
+* Chat loading, empty, and failure states have not all been observed in the browser; Playwright routing does not override MSW.
 
 ## Blockers
 
@@ -37,4 +37,4 @@
 ## Next action
 
 * Owner: User
-* Action: Review Pull Request #14.
+* Action: Review the Issue #8 implementation report and approve it or request changes.

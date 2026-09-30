@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
-import { Virtuoso } from 'react-virtuoso';
+import { useRef, useState } from 'react';
+import { Virtuoso, type VirtuosoHandle } from 'react-virtuoso';
 
 import { getChatMessageAPI } from '@/api/chatApi';
 import { useChatStore } from '@/stores/chatRoomIdStore';
@@ -10,87 +10,71 @@ import {
   toSortedChats,
 } from '@/utils/chat.utils';
 
-import type {
-  ChatMessage,
-  FlattenChatTypes,
-  PaginatedResponse,
-} from '../../chat.types';
+import type { FlattenChatTypes } from '../../chat.types';
 import ChatMessageGroup from './ChatMessageGroup';
 import DateDivider from './DateDivider';
 
 const renderDataByTime = (_: number, chatData: FlattenChatTypes) => {
   if (chatData.type === 'date') return <DateDivider dKey={chatData.dKey} />;
-
   return <ChatMessageGroup tKey={chatData.tKey} tValue={chatData.tValue} />;
 };
 
-interface ChatMessageListProps {
-  socket: WebSocket | null;
-}
-
-function ChatMessageList({ socket }: ChatMessageListProps) {
+function ChatMessageList() {
   const [atBottom, setAtBottom] = useState(true);
-  const [isFirstLoad, setIsFirstLoad] = useState(true);
-  const [rawMessages, setRawMessages] = useState<ChatMessage[]>([]);
+  const listRef = useRef<VirtuosoHandle>(null);
   const { roomId } = useChatStore();
 
-  const messagesQuery = useInfiniteQuery<
-    PaginatedResponse<ChatMessage>,
-    Error,
-    any
-  >({
+  const messagesQuery = useInfiniteQuery({
     queryKey: ['getChatMessage', roomId],
     queryFn: ({ pageParam }) => getChatMessageAPI(roomId!, Number(pageParam)),
     enabled: !!roomId,
     initialPageParam: 1,
     getNextPageParam: lastPage => {
       if (!lastPage.next) return undefined;
-      const url = new URL(lastPage.next);
-      return Number(url.searchParams.get('page'));
+      return Number(new URL(lastPage.next).searchParams.get('page'));
     },
   });
 
-  useEffect(() => {
-    if (isFirstLoad && messagesQuery.isSuccess && messagesQuery.data) {
-      setIsFirstLoad(false);
-      setRawMessages(messagesQuery.data.pages[0].results);
-    }
-  }, [isFirstLoad, messagesQuery.data, messagesQuery.isSuccess]);
+  if (messagesQuery.isPending) {
+    return (
+      <div className="flex h-full items-center justify-center">
+        메시지를 불러오는 중입니다...
+      </div>
+    );
+  }
 
-  useEffect(() => {
-    if (!socket || !messagesQuery.data) return undefined;
+  if (messagesQuery.isError) {
+    return (
+      <div className="flex h-full flex-col items-center justify-center">
+        <p>메시지를 불러오지 못했습니다.</p>
+        <button
+          type="button"
+          className="mt-3 text-fuchsia-700 underline"
+          onClick={() => messagesQuery.refetch()}
+        >
+          다시 시도
+        </button>
+      </div>
+    );
+  }
 
-    const handleMessage = (event: MessageEvent) => {
-      const data = JSON.parse(event.data);
+  const messages = messagesQuery.data.pages.flatMap(page => page.results);
+  if (messages.length === 0) {
+    return (
+      <div className="flex h-full items-center justify-center">
+        첫 메시지를 보내보세요.
+      </div>
+    );
+  }
 
-      if (data.type === 'chat.message') {
-        const newMessage: ChatMessage = data.message;
-        setRawMessages(prev => [...prev, newMessage]);
-      }
-    };
-
-    socket.addEventListener('message', handleMessage);
-
-    return () => {
-      socket.removeEventListener('message', handleMessage);
-    };
-  }, [messagesQuery, socket]);
-
-  const handleFetchNextPage = async (): Promise<void> => {
-    const res = await messagesQuery.fetchNextPage();
-    const lastPage = res.data?.pages.at(-1);
-    if (!lastPage) return;
-
-    setRawMessages(prev => [...lastPage.results, ...prev]);
-  };
-
-  const sorted = toSortedChats(rawMessages);
-  const grouped = toGroupedChatMap(sorted);
-  const flattenedChatData = toFlattenChats(grouped);
+  const flattenedChatData = toFlattenChats(
+    toGroupedChatMap(toSortedChats(messages)),
+  );
 
   return (
-    <div className="h-full">
+    <div className="relative h-full">
       <Virtuoso
+        ref={listRef}
         className="chat-scrollbar py-2 pe-2"
         data={flattenedChatData}
         initialTopMostItemIndex={flattenedChatData.length - 1}
@@ -104,11 +88,27 @@ function ChatMessageList({ socket }: ChatMessageListProps) {
             atTop &&
             messagesQuery.hasNextPage &&
             !messagesQuery.isFetchingNextPage
-          )
-            handleFetchNextPage();
+          ) {
+            messagesQuery.fetchNextPage();
+          }
         }}
         increaseViewportBy={{ top: 200, bottom: 0 }}
       />
+      {!atBottom && (
+        <button
+          type="button"
+          className="absolute right-4 bottom-4 rounded-full bg-fuchsia-500 px-4 py-2 text-sm font-semibold text-white shadow-md hover:bg-fuchsia-600"
+          onClick={() =>
+            listRef.current?.scrollToIndex({
+              index: flattenedChatData.length - 1,
+              align: 'end',
+              behavior: 'smooth',
+            })
+          }
+        >
+          최신 메시지 보기
+        </button>
+      )}
     </div>
   );
 }

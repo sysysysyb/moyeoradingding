@@ -17,11 +17,26 @@ const USER_TYPE = [
   { id: 'IDOL', label: '아이돌' },
 ];
 
-const DEMO_ACCOUNT = {
-  userType: 'NORMAL' as const,
-  email: 'test@test.com',
-  password: 'test123!',
-};
+const DEMO_ACCOUNTS: Array<LoginFormValues & { label: string }> = [
+  {
+    userType: 'NORMAL',
+    email: 'test@test.com',
+    password: 'test123!',
+    label: '일반 회원(팬)',
+  },
+  {
+    userType: 'IDOL',
+    email: 'idol@test.com',
+    password: 'test123!',
+    label: '아이돌',
+  },
+  {
+    userType: 'MANAGER',
+    email: 'manager@test.com',
+    password: 'test123!',
+    label: '매니저',
+  },
+];
 
 export default function Login() {
   const { submit, isLoading } = useLogin();
@@ -35,17 +50,6 @@ export default function Login() {
   });
 
   const { register } = form;
-
-  const handleDemoLogin = () => {
-    form.setValue('userType', DEMO_ACCOUNT.userType, { shouldValidate: true });
-    form.setValue('email', DEMO_ACCOUNT.email, { shouldValidate: true });
-    form.setValue('password', DEMO_ACCOUNT.password, {
-      shouldValidate: true,
-    });
-
-    const submitDemoAccount = form.handleSubmit(submit, toastFormErrors);
-    submitDemoAccount();
-  };
 
   return (
     <div className="flex flex-col gap-2">
@@ -76,19 +80,38 @@ export default function Login() {
 
         <Input type="password" label="비밀번호" {...register('password')} />
 
-        <div className="mt-4 rounded-lg border border-fuchsia-100 bg-fuchsia-50 p-4 text-sm text-gray-700">
-          <p className="font-semibold text-fuchsia-700">포트폴리오 데모 계정</p>
-          <p className="mt-1">일반 회원(팬) 계정으로 바로 둘러볼 수 있어요.</p>
-          <Button
-            type="button"
-            variant="secondary"
-            size="md"
-            className="mt-3 w-full font-semibold"
-            onClick={handleDemoLogin}
-            disabled={isLoading}
-          >
-            데모 계정으로 로그인
-          </Button>
+        <div className="mt-4 rounded-xl border border-fuchsia-100 bg-fuchsia-50/70 p-4 text-sm text-gray-700">
+          <p className="font-semibold text-fuchsia-800">
+            데모 계정으로 둘러보기
+          </p>
+          <p className="mt-1 text-xs text-gray-600">
+            계정을 선택하면 바로 로그인합니다.
+          </p>
+          <div className="mt-4 grid grid-cols-2 gap-2">
+            {DEMO_ACCOUNTS.map((account, index) => (
+              <Button
+                key={account.userType}
+                type="button"
+                variant={index === 0 ? 'primary' : 'white'}
+                size="md"
+                className={`min-h-11 w-full rounded-lg font-semibold disabled:cursor-wait disabled:opacity-60 ${
+                  index === 0
+                    ? 'col-span-2 shadow-sm'
+                    : 'border border-fuchsia-200 bg-white text-fuchsia-700 hover:bg-fuchsia-100'
+                }`}
+                onClick={() =>
+                  submit({
+                    userType: account.userType,
+                    email: account.email,
+                    password: account.password,
+                  })
+                }
+                disabled={isLoading}
+              >
+                {account.label} 로그인
+              </Button>
+            ))}
+          </div>
         </div>
 
         <div className="my-8 flex flex-col gap-4">

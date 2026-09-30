@@ -5,11 +5,12 @@ import { useState } from 'react';
 import { ChatComposerButtonStyles } from '../../chat.styles';
 
 interface ChatComposerProps {
-  socket: WebSocket | null;
+  onSend: (content: string) => Promise<boolean>;
+  isSending: boolean;
   onToggleList: () => void;
 }
 
-function ChatComposer({ socket, onToggleList }: ChatComposerProps) {
+function ChatComposer({ onSend, isSending, onToggleList }: ChatComposerProps) {
   const [inputValue, setInputValue] = useState('');
   const trimmedInputValue = inputValue.trim();
 
@@ -17,15 +18,14 @@ function ChatComposer({ socket, onToggleList }: ChatComposerProps) {
     setInputValue(e.target.value);
   };
 
-  const handleSendMessage = () => {
-    if (socket && socket.readyState === WebSocket.OPEN) {
-      socket.send(JSON.stringify({ message: inputValue }));
+  const handleSendMessage = async () => {
+    if (trimmedInputValue && !isSending && (await onSend(trimmedInputValue))) {
       setInputValue('');
     }
   };
 
   const handleEnterKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
       e.preventDefault();
       handleSendMessage();
     }
@@ -35,6 +35,7 @@ function ChatComposer({ socket, onToggleList }: ChatComposerProps) {
     <div className="flex items-center justify-between gap-2 p-2">
       <input
         type="text"
+        maxLength={1000}
         placeholder="메시지를 입력하세요..."
         value={inputValue}
         onChange={handleChangeInputValue}
@@ -57,6 +58,8 @@ function ChatComposer({ socket, onToggleList }: ChatComposerProps) {
       {trimmedInputValue && (
         <button
           type="button"
+          aria-label="메시지 보내기"
+          disabled={isSending}
           className={clsx(
             ChatComposerButtonStyles,
             'bg-fuchsia-500 hover:bg-fuchsia-600',
