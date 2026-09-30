@@ -4,7 +4,8 @@ import { API_BASE_URL } from '@/api/config';
 import {
   createMockAccessToken,
   createMockRefreshToken,
-  DEMO_AUTH_USER,
+  DEMO_AUTH_USERS,
+  getDemoUserById,
   getUserIdFromAccessToken,
   updateDemoUserProfile,
 } from '@/mocks/data/auth';
@@ -12,6 +13,7 @@ import {
 interface LoginRequestBody {
   email: string;
   password: string;
+  userType?: string;
 }
 
 interface SignUpRequestBody {
@@ -53,12 +55,16 @@ export const authHandlers = [
   }),
 
   http.post(`${API_BASE_URL}/users/login/`, async ({ request }) => {
-    const { email, password } = (await request.json()) as LoginRequestBody;
+    const { email, password, userType } =
+      (await request.json()) as LoginRequestBody;
+    const user = DEMO_AUTH_USERS.find(
+      account =>
+        account.email === email &&
+        account.password === password &&
+        account.role === userType,
+    );
 
-    if (
-      email !== DEMO_AUTH_USER.email ||
-      password !== DEMO_AUTH_USER.password
-    ) {
+    if (!user) {
       return HttpResponse.json(
         { message: '이메일 또는 비밀번호가 일치하지 않습니다.' },
         { status: 401 },
@@ -66,8 +72,8 @@ export const authHandlers = [
     }
 
     return HttpResponse.json({
-      access_token: createMockAccessToken(DEMO_AUTH_USER.id),
-      refresh_token: createMockRefreshToken(DEMO_AUTH_USER.id),
+      access_token: createMockAccessToken(user.id),
+      refresh_token: createMockRefreshToken(user.id),
     });
   }),
 
@@ -75,16 +81,17 @@ export const authHandlers = [
     const token = getBearerToken(request);
     const userId = token ? getUserIdFromAccessToken(token) : null;
 
-    if (userId !== DEMO_AUTH_USER.id) {
+    const user = getDemoUserById(userId);
+    if (!user) {
       return HttpResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
 
     return HttpResponse.json({
-      id: DEMO_AUTH_USER.id,
-      email: DEMO_AUTH_USER.email,
-      nickname: DEMO_AUTH_USER.nickname,
-      profile_image_url: DEMO_AUTH_USER.profile_image_url,
-      role: DEMO_AUTH_USER.role,
+      id: user.id,
+      email: user.email,
+      nickname: user.nickname,
+      profile_image_url: user.profile_image_url,
+      role: user.role,
     });
   }),
 
@@ -92,7 +99,8 @@ export const authHandlers = [
     const token = getBearerToken(request);
     const userId = token ? getUserIdFromAccessToken(token) : null;
 
-    if (userId !== DEMO_AUTH_USER.id) {
+    const user = getDemoUserById(userId);
+    if (!user) {
       return HttpResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
 
@@ -101,9 +109,9 @@ export const authHandlers = [
     const nickname =
       typeof nicknameValue === 'string' ? nicknameValue.trim() : undefined;
 
-    const updatedProfile = updateDemoUserProfile({
+    const updatedProfile = updateDemoUserProfile(user, {
       nickname: nickname || undefined,
-      profile_image_url: DEMO_AUTH_USER.profile_image_url,
+      profile_image_url: user.profile_image_url,
     });
 
     return HttpResponse.json({
@@ -113,11 +121,18 @@ export const authHandlers = [
   }),
 
   http.post(`${API_BASE_URL}/users/password/verify/`, async ({ request }) => {
+    const token = getBearerToken(request);
+    const user = getDemoUserById(
+      token ? getUserIdFromAccessToken(token) : null,
+    );
+    if (!user) {
+      return HttpResponse.json({ message: 'Unauthorized' }, { status: 401 });
+    }
     const { current_password: currentPassword } = (await request.json()) as {
       current_password?: string;
     };
 
-    if (currentPassword !== DEMO_AUTH_USER.password) {
+    if (currentPassword !== user.password) {
       return HttpResponse.json(
         { message: '비밀번호가 일치하지 않습니다.' },
         { status: 400 },

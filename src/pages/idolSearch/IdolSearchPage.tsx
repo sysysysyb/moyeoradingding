@@ -1,8 +1,11 @@
+import { ChatBubbleLeftRightIcon } from '@heroicons/react/24/solid';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { Button } from '@/components/common/Button';
 import SearchBar from '@/components/common/SearchBar';
 import { useDebounce } from '@/hooks/useDebounce';
+import { useUserStore } from '@/stores/userStore';
 
 import IdolSearchList from './IdolSearchList';
 import {
@@ -17,6 +20,7 @@ export default function IdolSearchPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
   const navigate = useNavigate();
+  const role = useUserStore(state => state.user?.role);
 
   const {
     idolsToDisplay,
@@ -52,6 +56,20 @@ export default function IdolSearchPage() {
             onInputChange={handleInputChange}
           />
         </div>
+
+        {role === 'NORMAL' && (
+          <Button
+            type="button"
+            variant="outline"
+            shape="pill"
+            size="md"
+            className="mt-5 gap-2 font-semibold"
+            onClick={() => navigate('/chat')}
+          >
+            <ChatBubbleLeftRightIcon className="size-5" />
+            그룹 채팅
+          </Button>
+        )}
 
         {!isSearching && !shouldShowEmptyFavorites && !isLoading && (
           <p className="mt-6 text-sm text-gray-700 md:mt-8 md:text-base md:font-semibold">

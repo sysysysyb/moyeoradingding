@@ -9,14 +9,35 @@ export interface MockUser {
   profile_image_url: string;
 }
 
-export const DEMO_AUTH_USER: MockUser = {
-  id: 1,
-  email: 'test@test.com',
-  nickname: 'test',
-  password: 'test123!',
-  role: 'NORMAL',
-  profile_image_url: 'default-profile.jpg',
-};
+export const DEMO_AUTH_USERS: MockUser[] = [
+  {
+    id: 1,
+    email: 'test@test.com',
+    nickname: '데모 팬',
+    password: 'test123!',
+    role: 'NORMAL',
+    profile_image_url: 'default-profile.jpg',
+  },
+  {
+    id: 2,
+    email: 'idol@test.com',
+    nickname: '리즈',
+    password: 'test123!',
+    role: 'IDOL',
+    profile_image_url: 'default-profile.jpg',
+  },
+  {
+    id: 3,
+    email: 'manager@test.com',
+    nickname: '데모 매니저',
+    password: 'test123!',
+    role: 'MANAGER',
+    profile_image_url: 'default-profile.jpg',
+  },
+];
+
+export const getDemoUserById = (userId: number | null) =>
+  DEMO_AUTH_USERS.find(user => user.id === userId);
 
 export const createMockAccessToken = (userId: number) =>
   `mock-access-token-${userId}`;
@@ -29,20 +50,20 @@ export const getUserIdFromAccessToken = (token: string) => {
   return match ? Number(match[1]) : null;
 };
 
-export const updateDemoUserProfile = (profile: {
-  nickname?: string;
-  profile_image_url?: string;
-}) => {
-  if (profile.nickname) {
-    DEMO_AUTH_USER.nickname = profile.nickname;
-  }
-
-  if (profile.profile_image_url) {
-    DEMO_AUTH_USER.profile_image_url = profile.profile_image_url;
-  }
+export const updateDemoUserProfile = (
+  user: MockUser,
+  profile: {
+    nickname?: string;
+    profile_image_url?: string;
+  },
+) => {
+  Object.assign(user, {
+    nickname: profile.nickname || user.nickname,
+    profile_image_url: profile.profile_image_url || user.profile_image_url,
+  });
 
   return {
-    nickname: DEMO_AUTH_USER.nickname,
-    profile_image_url: DEMO_AUTH_USER.profile_image_url,
+    nickname: user.nickname,
+    profile_image_url: user.profile_image_url,
   };
 };
