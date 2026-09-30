@@ -1,23 +1,33 @@
 import { http, HttpResponse } from 'msw';
 
+import { API_BASE_URL } from '@/api/config';
 import {
   addMockScheduleBookmark,
+  getMockIdolSchedules,
   getMockScheduleBookmarks,
-  getMockSchedulesByIdolId,
   removeMockScheduleBookmark,
 } from '@/mocks/data/schedules';
 
 export const scheduleHandlers = [
-  http.get('*/idols/:idolId/schedules/', ({ params }) => {
-    const idolId = Number(params.idolId);
-    return HttpResponse.json(getMockSchedulesByIdolId(idolId));
+  http.get(`${API_BASE_URL}/schedules/idols/`, ({ request }) => {
+    const url = new URL(request.url);
+    const idolParam = url.searchParams.get('idol');
+    const idolId = idolParam ? Number(idolParam) : undefined;
+    const dateISO = url.searchParams.get('date') ?? undefined;
+
+    return HttpResponse.json(getMockIdolSchedules(idolId, dateISO));
   }),
 
-  http.get('*/schedules/my/', () => {
+  http.get(`${API_BASE_URL}/idols/:idolId/schedules/`, ({ params }) => {
+    const idolId = Number(params.idolId);
+    return HttpResponse.json(getMockIdolSchedules(idolId));
+  }),
+
+  http.get(`${API_BASE_URL}/schedules/my/`, () => {
     return HttpResponse.json(getMockScheduleBookmarks());
   }),
 
-  http.post('*/schedules/my/', async ({ request }) => {
+  http.post(`${API_BASE_URL}/schedules/my/`, async ({ request }) => {
     const body = (await request.json()) as {
       idol_schedule?: number;
       group_schedule?: number;
@@ -34,7 +44,7 @@ export const scheduleHandlers = [
     return HttpResponse.json(bookmark, { status: 201 });
   }),
 
-  http.delete('*/schedules/my/:bookmarkId/', ({ params }) => {
+  http.delete(`${API_BASE_URL}/schedules/my/:bookmarkId/`, ({ params }) => {
     const bookmarkId = Number(params.bookmarkId);
     const removed = removeMockScheduleBookmark(bookmarkId);
 

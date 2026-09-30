@@ -213,8 +213,15 @@ const createBookmarkSchedule = (
   };
 };
 
-export const getMockSchedulesByIdolId = (idolId: number) =>
-  MOCK_IDOL_SCHEDULES.filter(schedule => schedule.idol === idolId);
+export const getMockIdolSchedules = (idolId?: number, dateISO?: string) => {
+  const targetIdolId = idolId ?? MOCK_IDOLS[0].id;
+
+  return MOCK_IDOL_SCHEDULES.filter(
+    schedule =>
+      schedule.idol === targetIdolId &&
+      (!dateISO || schedule.start_time.startsWith(dateISO)),
+  );
+};
 
 export const getMockScheduleBookmarks = () =>
   toPaginatedResponse([...myScheduleBookmarks]);

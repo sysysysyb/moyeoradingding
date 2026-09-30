@@ -1,5 +1,6 @@
 import { http, HttpResponse } from 'msw';
 
+import { API_BASE_URL } from '@/api/config';
 import type { Idol } from '@/mocks/data/idols';
 import { MOCK_IDOLS } from '@/mocks/data/idols';
 import type { DRFPage } from '@/types/idol';
@@ -43,7 +44,7 @@ const getPaginationUrl = (
 };
 
 export const idolHandlers = [
-  http.get('*/idols/:idolId/', ({ params }) => {
+  http.get(`${API_BASE_URL}/idols/:idolId/`, ({ params }) => {
     const idolId = Number(params.idolId);
     const idol = MOCK_IDOLS.find(item => item.id === idolId);
 
@@ -57,7 +58,7 @@ export const idolHandlers = [
     return HttpResponse.json(toIdolListItemResponse(idol));
   }),
 
-  http.get('*/idols/', ({ request }) => {
+  http.get(`${API_BASE_URL}/idols/`, ({ request }) => {
     const url = new URL(request.url);
     const searchQuery = url.searchParams.get('search')?.trim().toLowerCase();
     const page = Number(url.searchParams.get('page') ?? '1');
