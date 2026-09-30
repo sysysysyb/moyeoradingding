@@ -1,5 +1,6 @@
 import { http, HttpResponse } from 'msw';
 
+import { API_BASE_URL } from '@/api/config';
 import {
   addMockBookmarkIdol,
   getMockBookmarkGroups,
@@ -12,15 +13,15 @@ interface AddBookmarkIdolRequestBody {
 }
 
 export const bookmarkHandlers = [
-  http.get('*/bookmarks/idols/', () => {
+  http.get(`${API_BASE_URL}/bookmarks/idols/`, () => {
     return HttpResponse.json(getMockBookmarkIdols());
   }),
 
-  http.get('*/bookmarks/groups/', () => {
+  http.get(`${API_BASE_URL}/bookmarks/groups/`, () => {
     return HttpResponse.json(getMockBookmarkGroups());
   }),
 
-  http.post('*/bookmarks/idols/', async ({ request }) => {
+  http.post(`${API_BASE_URL}/bookmarks/idols/`, async ({ request }) => {
     const { idol } = (await request.json()) as AddBookmarkIdolRequestBody;
     const bookmark = addMockBookmarkIdol(Number(idol));
 
@@ -34,7 +35,7 @@ export const bookmarkHandlers = [
     return HttpResponse.json(bookmark, { status: 201 });
   }),
 
-  http.delete('*/bookmarks/idols/:bookmarkId/', ({ params }) => {
+  http.delete(`${API_BASE_URL}/bookmarks/idols/:bookmarkId/`, ({ params }) => {
     const bookmarkId = Number(params.bookmarkId);
     const removed = removeMockBookmarkIdol(bookmarkId);
 

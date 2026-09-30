@@ -1,5 +1,6 @@
 import { http, HttpResponse } from 'msw';
 
+import { API_BASE_URL } from '@/api/config';
 import {
   createMockAccessToken,
   createMockRefreshToken,
@@ -13,6 +14,11 @@ interface LoginRequestBody {
   password: string;
 }
 
+interface SignUpRequestBody {
+  email: string;
+  nickname: string;
+}
+
 const getBearerToken = (request: Request) => {
   const authHeader =
     request.headers.get('Authorization') ??
@@ -24,7 +30,29 @@ const getBearerToken = (request: Request) => {
 };
 
 export const authHandlers = [
-  http.post('*/users/login/', async ({ request }) => {
+  http.post(`${API_BASE_URL}/users/signup/`, async ({ request }) => {
+    const formData = await request.formData();
+    const body: SignUpRequestBody = {
+      email: String(formData.get('email') ?? ''),
+      nickname: String(formData.get('nickname') ?? ''),
+    };
+
+    return HttpResponse.json(
+      {
+        message_code: 201,
+        message: '회원가입이 성공적으로 완료되었습니다.',
+        data: {
+          user_id: 'demo-signup-user',
+          ...body,
+          userType: 'NORMAL',
+          profile_image_url: 'default-profile.jpg',
+        },
+      },
+      { status: 201 },
+    );
+  }),
+
+  http.post(`${API_BASE_URL}/users/login/`, async ({ request }) => {
     const { email, password } = (await request.json()) as LoginRequestBody;
 
     if (
@@ -43,7 +71,7 @@ export const authHandlers = [
     });
   }),
 
-  http.get('*/users/mypage/', ({ request }) => {
+  http.get(`${API_BASE_URL}/users/mypage/`, ({ request }) => {
     const token = getBearerToken(request);
     const userId = token ? getUserIdFromAccessToken(token) : null;
 
@@ -60,7 +88,7 @@ export const authHandlers = [
     });
   }),
 
-  http.patch('*/users/mypage/', async ({ request }) => {
+  http.patch(`${API_BASE_URL}/users/mypage/`, async ({ request }) => {
     const token = getBearerToken(request);
     const userId = token ? getUserIdFromAccessToken(token) : null;
 
@@ -84,7 +112,7 @@ export const authHandlers = [
     });
   }),
 
-  http.post('*/users/password/verify/', async ({ request }) => {
+  http.post(`${API_BASE_URL}/users/password/verify/`, async ({ request }) => {
     const { current_password: currentPassword } = (await request.json()) as {
       current_password?: string;
     };
@@ -101,7 +129,7 @@ export const authHandlers = [
     });
   }),
 
-  http.patch('*/users/password/change/', async ({ request }) => {
+  http.patch(`${API_BASE_URL}/users/password/change/`, async ({ request }) => {
     const {
       new_password: newPassword,
       confirm_new_password: confirmNewPassword,
@@ -122,7 +150,7 @@ export const authHandlers = [
     });
   }),
 
-  http.post('*/users/logout/', () => {
+  http.post(`${API_BASE_URL}/users/logout/`, () => {
     return HttpResponse.json({ message: '로그아웃되었습니다.' });
   }),
 ];
