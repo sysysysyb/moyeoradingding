@@ -1,30 +1,30 @@
 # Workflow Status
 
-> Updated: 2026-09-30 13:44 KST
+> Updated: 2026-09-30 14:24 KST
 
 ## Current state
 
 * Status: review
-* Stage: Pull Request #12 open; awaiting review
+* Stage: Pull Request #13 open; awaiting review
 
 ## Active work
 
-* Issue: [#5](https://github.com/sysysysyb/moyeoradingding/issues/5)
-* Branch: `refactor/5-eslint-typescript-lint`
-* Pull Request: [#12](https://github.com/sysysysyb/moyeoradingding/pull/12)
+* Issue: [#6](https://github.com/sysysysyb/moyeoradingding/issues/6)
+* Branch: `refactor/6-api-base-url`
+* Pull Request: [#13](https://github.com/sysysysyb/moyeoradingding/pull/13)
 * Plan: [Approved Spec #4](https://github.com/sysysysyb/moyeoradingding/issues/4)
 * Design: None
 
 ## Current checkpoint
 
-* Last completed: Pushed Issue #5 and opened Pull Request #12
-* Latest verification: configuration ESLint, package deduplication check, and `npm run build` — passed; full `npm run lint` — failed at the recorded baseline (17,974 errors, 2 warnings)
+* Last completed: Pushed Issue #6 and opened Pull Request #13
+* Latest verification: changed-file ESLint, `npm run lint`, MSW-enabled `npm run build`, and production-preview browser flow — passed
 
 ## Review focus
 
-* `.eslintrc.cjs::module.exports` — Airbnb and official TypeScript rule composition
-* `package.json::devDependencies` — v8 package alignment and removals
-* `CONTEXT.md::NORMAL demo account` — approved trivial carry-in
+* `src/api/config.ts::API_BASE_URL` — single default and trailing-slash normalization
+* `src/api/axiosInstance.ts::axiosInstance` — shared request base path and refresh request
+* `src/utils/toAbsolute.ts::toAbsolute` — media URL origin derived from the API base path
 
 ## Remaining risk
 
@@ -37,4 +37,4 @@
 ## Next action
 
 * Owner: User
-* Action: Review Pull Request #12.
+* Action: Review Pull Request #13.
