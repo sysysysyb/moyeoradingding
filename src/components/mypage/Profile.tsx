@@ -14,7 +14,9 @@ export default function Profile({ onEditClick }: ProfileProp) {
   const isDesktop = useMediaQuery(mediaQuery.tablet);
   const isMobile = useMediaQuery(mediaQuery.mobile);
 
-  const avatarSize = isDesktop ? '2xl' : isMobile ? 'md' : 'xl';
+  let avatarSize: '2xl' | 'md' | 'xl' = 'xl';
+  if (isDesktop) avatarSize = '2xl';
+  else if (isMobile) avatarSize = 'md';
   const buttonSize = isMobile ? 'sm' : 'md';
 
   return (

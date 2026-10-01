@@ -121,13 +121,13 @@ export function useFanMainData() {
       ? idolSchedulesFromApi
       : [];
 
-    const mappedFromApi: Schedule[] = idolSchedules.map((it: any) => ({
+    const mappedFromApi: Schedule[] = idolSchedules.map(it => ({
       id: it.id ?? Math.random(),
       title: it.title ?? '',
-      startTime: it.start_time ?? it.startTime ?? '',
-      endTime: it.end_time ?? it.endTime ?? '',
+      startTime: it.start_time ?? '',
+      endTime: it.end_time ?? '',
       description: it.description ?? '',
-      isPublic: Boolean(it.is_public ?? it.isPublic ?? true),
+      isPublic: Boolean(it.is_public ?? true),
       idol: { id: currentIdol.id, name: currentIdol.name },
       location: it.location ?? '',
       isBookmarked: bookmarkedScheduleIds.has(it.id),

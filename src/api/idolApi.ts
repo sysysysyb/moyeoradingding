@@ -1,4 +1,5 @@
 import axiosInstance from '@/api/axiosInstance';
+import type { RawScheduleContent } from '@/types/bookmark';
 import type { DRFPage, Idol, IdolServer } from '@/types/idol';
 import { avatarFromServerOrDicebear } from '@/utils/avatar';
 
@@ -18,8 +19,8 @@ export async function searchIdolsApi(
     id: String(it.id),
     name: it.name,
     avatarUrl: avatarFromServerOrDicebear(it.avatar_url, it.name),
-    groupName: (it as any).group_name ?? '',
-    position: (it as any).position ?? '',
+    groupName: it.group_name ?? '',
+    position: it.position,
   }));
 
   return {
@@ -30,20 +31,24 @@ export async function searchIdolsApi(
 
 // 아이돌 상세 조회 페이지
 export async function fetchIdolDetail(id: number | string): Promise<Idol> {
-  const res = await axiosInstance.get(`/idols/${id}/`);
-  const it = res.data as any;
+  const res = await axiosInstance.get<IdolServer>(`/idols/${id}/`);
+  const it = res.data;
 
   return {
     id: String(it.id),
     name: it.name,
     avatarUrl: avatarFromServerOrDicebear(it.avatar_url, it.name),
     groupName: it.group_name ?? '',
-    position: it.position ?? '',
+    position: it.position,
   };
 }
 
 // 아이돌 전체 스케줄 조회
-export async function fetchIdolSchedules(id: number | string) {
-  const res = await axiosInstance.get(`/idols/${id}/schedules/`);
+export async function fetchIdolSchedules(
+  id: number | string,
+): Promise<RawScheduleContent[]> {
+  const res = await axiosInstance.get<RawScheduleContent[]>(
+    `/idols/${id}/schedules/`,
+  );
   return res.data;
 }

@@ -60,8 +60,8 @@ function DateInput({ label, className, ...rest }: InputProps) {
     if (d && rest.onChange) {
       const formatted = formatYYYYMMDD(d);
       rest.onChange({
-        target: { value: formatted } as any,
-      } as React.ChangeEvent<HTMLInputElement>);
+        target: { name: rest.name, value: formatted },
+      } as unknown as React.ChangeEvent<HTMLInputElement>);
       setIsFocus(false);
     }
   };

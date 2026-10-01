@@ -41,8 +41,7 @@ export const useFavoritesStore = create<FavoritesState>()((set, get) => ({
       ]);
       set({ favoriteGroups: groups, favoriteIdols: idols, isLoading: false });
       set({ favorites: idols.map(idol => idol.idol) });
-    } catch (error) {
-      console.error('Failed to fetch favorites:', error);
+    } catch {
       set({ isLoading: false });
     }
   },

@@ -1,4 +1,4 @@
-import { type FieldErrors } from 'react-hook-form';
+import { type FieldErrors, type FieldValues } from 'react-hook-form';
 import { toast, type ToastOptions } from 'react-toastify';
 
 export const showSuccessToast = (message: string, options?: ToastOptions) => {
@@ -23,11 +23,11 @@ export const showErrorToast = (message: string, options?: ToastOptions) => {
   });
 };
 
-export const toastFormErrors = <T extends Record<string, any>>(
+export const toastFormErrors = <T extends FieldValues>(
   errors: FieldErrors<T>,
 ) => {
-  Object.values(errors).forEach((error: any) => {
-    if (error && error.message) {
+  Object.values(errors).forEach(error => {
+    if (typeof error?.message === 'string') {
       showErrorToast(error.message);
     }
   });

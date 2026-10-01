@@ -13,7 +13,7 @@ export function useIdolMainData() {
       try {
         const schedules = await fetchIdolSchedules();
         setAllSchedules(schedules);
-      } catch (err) {
+      } catch {
         setAllSchedules([]);
       }
     };
