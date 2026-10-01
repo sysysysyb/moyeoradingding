@@ -5,18 +5,17 @@ import PasswordInput from './PasswordInput';
 import TextArea from './TextArea';
 import TimeInput from './TimeInput';
 
-const InputMap: Record<FieldTypes, React.ComponentType<any>> = {
-  text: DefaultInput,
-  email: DefaultInput,
-  password: PasswordInput,
-  date: DateInput,
-  time: TimeInput,
-  textarea: TextArea,
-};
-
-type FieldProps = InputProps | TextAreaProps;
+type FieldProps =
+  | (Omit<InputProps, 'type'> & { type?: Exclude<FieldTypes, 'textarea'> })
+  | (Omit<TextAreaProps, 'type'> & { type: 'textarea' });
 
 export default function Input({ type = 'text', ...props }: FieldProps) {
-  const Component = InputMap[type];
-  return <Component {...props} />;
+  if (type === 'textarea') {
+    return <TextArea {...(props as Omit<TextAreaProps, 'type'>)} />;
+  }
+  const inputProps = props as Omit<InputProps, 'type'>;
+  if (type === 'password') return <PasswordInput {...inputProps} />;
+  if (type === 'date') return <DateInput {...inputProps} />;
+  if (type === 'time') return <TimeInput {...inputProps} />;
+  return <DefaultInput {...inputProps} />;
 }

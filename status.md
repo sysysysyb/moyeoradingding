@@ -1,33 +1,34 @@
 # Workflow Status
 
-> Updated: 2026-10-01 20:52 KST
+> Updated: 2026-10-01 22:18 KST
 
 ## Current state
 
 * Status: review
-* Stage: Issue #8 PR open with approved tooling follow-ups; awaiting review
+* Stage: Issue #16 implemented and verified locally; awaiting user review
 
 ## Active work
 
-* Issue: [#8](https://github.com/sysysysyb/moyeoradingding/issues/8)
-* Branch: `feat/8-mock-chat`
-* Pull Request: [#15](https://github.com/sysysysyb/moyeoradingding/pull/15)
-* Plan: [Approved Spec #4](https://github.com/sysysysyb/moyeoradingding/issues/4)
+* Issue: [#16](https://github.com/sysysysyb/moyeoradingding/issues/16)
+* Branch: `fix/16-eslint-cleanup`
+* Pull Request: None
+* Plan: None
 * Design: None
 
 ## Current checkpoint
 
-* Last completed: `dist/**` ESLint exclusion pushed to PR #15; residual lint cleanup recorded in Issue #16
-* Latest verification: Full lint completed with 18 existing errors and 2 warnings; `dist` is ignored, Prettier passed, and PR body was verified
+* Last completed: Existing lint baseline fixed; affected demo flows checked in browser
+* Latest verification: `npm run lint`, changed-file ESLint, and `npm run build` passed; browser QA found no errors in normal flows
 
 ## Review focus
 
-* `.eslintrc.cjs::ignorePatterns` — exclude generated `dist` output from lint
-* `.gitattributes` — keep Git checkouts at LF on Windows
+* `src/api/scheduleApi.ts::toIdolSchedule` — response shape and schedule mapping
+* `src/components/common/input/index.tsx::Input` — type-safe dispatch without changing input behavior
+* `src/hooks/useLogout.tsx::useLogout` — confirmation and local logout on API failure
 
 ## Remaining risk
 
-* Existing lint errors and warnings remain; cleanup is tracked in [#16](https://github.com/sysysysyb/moyeoradingding/issues/16).
+* Manager demo mock schedules reset when the selected date changes; observed during browser QA and outside Issue #16.
 
 ## Blockers
 
@@ -36,4 +37,4 @@
 ## Next action
 
 * Owner: User
-* Action: Review PR #15 and approve rebase merge or request changes.
+* Action: Review Issue #16 changes and approve push/PR creation or request changes.

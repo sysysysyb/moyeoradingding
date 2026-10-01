@@ -14,7 +14,7 @@ type UserDropdownProps = {
 function UserDropdown({ isOpen, onToggle, isMobile }: UserDropdownProps) {
   const { user } = useUserStore();
   const { navigateToMypage } = usePageNav();
-  const { handleLogout } = useLogout();
+  const { handleLogout, confirmationDialog } = useLogout();
 
   const userGreetingClass = 'text-base font-medium text-gray-600 my-4';
   const dropdownItemClass =
@@ -22,6 +22,7 @@ function UserDropdown({ isOpen, onToggle, isMobile }: UserDropdownProps) {
 
   const dropdownContent = (
     <div className="w-full py-1">
+      {confirmationDialog}
       <div className="mb-7 flex flex-col items-center">
         <UserAvatarImage
           profileImageUrl={user?.profile_image_url}

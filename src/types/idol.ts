@@ -13,6 +13,8 @@ export type IdolServer = {
   created_at: string;
   updated_at: string;
   avatar_url?: string | null;
+  group_name?: string;
+  position?: Idol['position'];
 };
 
 export type Idol = {

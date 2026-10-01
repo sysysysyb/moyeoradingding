@@ -14,7 +14,7 @@ function IdolCard({
   className,
   toggleFavorite,
   ...rest
-}: IdolCardProps & { toggleFavorite: (id: number) => void }) {
+}: IdolCardProps) {
   const { idolGroup, position } = detail;
   const [isLiked, setIsLiked] = useState<boolean>(false);
 
