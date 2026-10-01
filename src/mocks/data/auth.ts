@@ -21,7 +21,7 @@ export const DEMO_AUTH_USERS: MockUser[] = [
   {
     id: 2,
     email: 'idol@test.com',
-    nickname: '리즈',
+    nickname: '은하',
     password: 'test123!',
     role: 'IDOL',
     profile_image_url: 'default-profile.jpg',
@@ -29,7 +29,7 @@ export const DEMO_AUTH_USERS: MockUser[] = [
   {
     id: 3,
     email: 'manager@test.com',
-    nickname: '데모 매니저',
+    nickname: 'VIVIZ 매니저',
     password: 'test123!',
     role: 'MANAGER',
     profile_image_url: 'default-profile.jpg',

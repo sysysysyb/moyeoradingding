@@ -14,6 +14,7 @@ import IdolMainPage from '@/pages/main/idol/IdolMainPage';
 import ManagerMainPage from '@/pages/main/manager/ManagerMainPage';
 import MyProfile from '@/pages/MyProfile';
 import MySchedule from '@/pages/MySchedule';
+import NotFoundPage from '@/pages/NotFoundPage';
 import Register from '@/pages/Register';
 import { useUserStore } from '@/stores/userStore';
 
@@ -27,6 +28,11 @@ function RootPage() {
   }
 
   return <LandingPage />;
+}
+
+function ChatRoute() {
+  const role = useUserStore(state => state.user?.role);
+  return role === 'IDOL' || role === 'MANAGER' ? <Chat /> : <NotFoundPage />;
 }
 
 function App() {
@@ -63,7 +69,11 @@ function App() {
         <Route path="dashboard" element={<AdminDashboard />} />
       </Route>
       <Route path="/chat" element={<Layout component="chat" />}>
-        <Route index element={<Chat />} />
+        <Route index element={<ChatRoute />} />
+      </Route>
+
+      <Route element={<Layout />}>
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
   );

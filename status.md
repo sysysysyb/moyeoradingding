@@ -1,11 +1,11 @@
 # Workflow Status
 
-> Updated: 2026-09-30 23:04 KST
+> Updated: 2026-10-01 15:04 KST
 
 ## Current state
 
 * Status: review
-* Stage: Issue #8 local implementation committed; awaiting user review
+* Stage: Issue #8 follow-up verified locally; awaiting user review
 
 ## Active work
 
@@ -17,18 +17,18 @@
 
 ## Current checkpoint
 
-* Last completed: Resolved code-review findings and checked production preview Chat refresh
-* Latest verification: Build, changed-file ESLint, three-role browser flows, and production preview passed; full lint failed on 15,370 existing-format errors
+* Last completed: Verified production preview `/chat` refresh for fan and idol roles
+* Latest verification: Build, changed-file ESLint, role-gated Chat, and production preview refresh passed; full lint was interrupted after prior baseline failures
 
 ## Review focus
 
-* `src/pages/Login.tsx::Login` — three role buttons and responsive card
-* `src/mocks/handlers/chats.ts::chatHandlers` — HTTP Chat contract and validation
-* `src/api/axiosInstance.ts::request interceptor` — preserve the new login token
+* `src/App.tsx::ChatRoute` — fan route restriction and 404 fallback
+* `src/mocks/handlers/chats.ts::chatHandlers` — fan API restriction and participant list
+* `src/mocks/data/chats.ts::addMockChatMessage` — rapid-send ordering
 
 ## Remaining risk
 
-* Chat loading, empty, and failure states have not all been observed in the browser; Playwright routing does not override MSW.
+* Manager main still shows static Manager A and Karina copy alongside the VIVIZ Chat fixture.
 
 ## Blockers
 
@@ -37,4 +37,4 @@
 ## Next action
 
 * Owner: User
-* Action: Review the Issue #8 implementation report and approve it or request changes.
+* Action: Review the updated Issue #8 implementation report and approve it or request changes.

@@ -1,5 +1,6 @@
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import { zodResolver } from '@hookform/resolvers/zod';
+import clsx from 'clsx';
 import { Controller, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
@@ -94,11 +95,12 @@ export default function Login() {
                 type="button"
                 variant={index === 0 ? 'primary' : 'white'}
                 size="md"
-                className={`min-h-11 w-full rounded-lg font-semibold disabled:cursor-wait disabled:opacity-60 ${
+                className={clsx(
+                  'min-h-11 w-full rounded-lg font-semibold disabled:cursor-wait disabled:opacity-60',
                   index === 0
                     ? 'col-span-2 shadow-sm'
-                    : 'border border-fuchsia-200 bg-white text-fuchsia-700 hover:bg-fuchsia-100'
-                }`}
+                    : 'border border-fuchsia-200 bg-white text-fuchsia-700 hover:bg-fuchsia-100',
+                )}
                 onClick={() =>
                   submit({
                     userType: account.userType,
