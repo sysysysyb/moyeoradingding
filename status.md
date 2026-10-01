@@ -1,11 +1,11 @@
 # Workflow Status
 
-> Updated: 2026-10-01 20:38 KST
+> Updated: 2026-10-01 20:52 KST
 
 ## Current state
 
 * Status: review
-* Stage: Issue #8 PR open with the approved LF checkout follow-up included; awaiting review
+* Stage: Issue #8 PR open with approved tooling follow-ups; awaiting review
 
 ## Active work
 
@@ -17,16 +17,17 @@
 
 ## Current checkpoint
 
-* Last completed: LF checkout fix pushed to PR #15 and its verification report updated
-* Latest verification: PR base, head, body, and Setting label verified; fresh checkout had 0 CRLF and targeted ESLint passed; full lint was stopped after 10+ minutes
+* Last completed: `dist/**` ESLint exclusion pushed to PR #15; residual lint cleanup recorded in Issue #16
+* Latest verification: Full lint completed with 18 existing errors and 2 warnings; `dist` is ignored, Prettier passed, and PR body was verified
 
 ## Review focus
 
-* `.gitattributes` — ensure Git checks out text as LF on Windows
+* `.eslintrc.cjs::ignorePatterns` — exclude generated `dist` output from lint
+* `.gitattributes` — keep Git checkouts at LF on Windows
 
 ## Remaining risk
 
-* Full lint completion is unverified because the repository-wide run remained active for over 10 minutes.
+* Existing lint errors and warnings remain; cleanup is tracked in [#16](https://github.com/sysysysyb/moyeoradingding/issues/16).
 
 ## Blockers
 
