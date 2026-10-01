@@ -1,11 +1,11 @@
 # Workflow Status
 
-> Updated: 2026-10-01 16:20 KST
+> Updated: 2026-10-01 20:38 KST
 
 ## Current state
 
 * Status: review
-* Stage: Issue #8 PR opened; awaiting review and rebase merge approval
+* Stage: Issue #8 PR open with the approved LF checkout follow-up included; awaiting review
 
 ## Active work
 
@@ -17,18 +17,16 @@
 
 ## Current checkpoint
 
-* Last completed: PR #15 opened against `dev` with Issue #8 commits and review report
-* Latest verification: PR base, head, body, labels, and commits verified; build, changed-file ESLint, and browser flows passed earlier
+* Last completed: LF checkout fix pushed to PR #15 and its verification report updated
+* Latest verification: PR base, head, body, and Setting label verified; fresh checkout had 0 CRLF and targeted ESLint passed; full lint was stopped after 10+ minutes
 
 ## Review focus
 
-* `src/pages/Login.tsx::Login` — role-based demo login buttons and labels
-* `src/App.tsx::ChatRoute` — role guard and 404 fallback
-* `src/mocks/handlers/chats.ts::chatHandlers` — mock Chat API access rules
+* `.gitattributes` — ensure Git checks out text as LF on Windows
 
 ## Remaining risk
 
-* Chat can still open on historical messages; initial bottom position is planned for Issue #9.
+* Full lint completion is unverified because the repository-wide run remained active for over 10 minutes.
 
 ## Blockers
 
