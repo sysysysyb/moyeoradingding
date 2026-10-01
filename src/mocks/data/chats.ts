@@ -1,4 +1,4 @@
-import type { ChatMessage } from '@/pages/chat/chat.types';
+import type { ChatMessage, ChatParticipant } from '@/pages/chat/chat.types';
 
 import { getDemoUserById } from './auth';
 
@@ -9,7 +9,7 @@ export const CHAT_EXAMPLES = [
     id: 'm-000',
     sender: {
       id: 'manager-01',
-      nickname: '김ㅇㅇ 매니저',
+      nickname: 'VIVIZ 매니저',
       profile_image: MANAGER_PROFILE_IMAGE,
     },
     content: '이번 주 주요 일정 정리해서 공유드릴게요.',
@@ -19,7 +19,7 @@ export const CHAT_EXAMPLES = [
     id: 'm-000a',
     sender: {
       id: 'idol-01',
-      nickname: '리즈',
+      nickname: '은하',
       profile_image: undefined,
     },
     content: '네 감사합니다! 정리본 받으면 캘린더에 반영할게요.',
@@ -29,7 +29,7 @@ export const CHAT_EXAMPLES = [
     id: 'm-000b',
     sender: {
       id: 'manager-01',
-      nickname: '김ㅇㅇ 매니저',
+      nickname: 'VIVIZ 매니저',
       profile_image: MANAGER_PROFILE_IMAGE,
     },
     content: '내일 팬사인회 사전 동선 다시 한 번 체크 부탁드려요.',
@@ -39,7 +39,7 @@ export const CHAT_EXAMPLES = [
     id: 'm-000c',
     sender: {
       id: 'idol-01',
-      nickname: '리즈',
+      nickname: '은하',
       profile_image: undefined,
     },
     content: '네, 리허설 포함해서 점검 목록 업데이트해둘게요.',
@@ -49,7 +49,7 @@ export const CHAT_EXAMPLES = [
     id: 'm-001',
     sender: {
       id: 'manager-01',
-      nickname: '김ㅇㅇ 매니저',
+      nickname: 'VIVIZ 매니저',
       profile_image: MANAGER_PROFILE_IMAGE,
     },
     content: '스케줄 확인 가능해요?',
@@ -59,7 +59,7 @@ export const CHAT_EXAMPLES = [
     id: 'm-002',
     sender: {
       id: 'idol-01',
-      nickname: '리즈',
+      nickname: '은하',
       profile_image: undefined,
     },
     content: '네, 지금 확인 중입니다!',
@@ -69,7 +69,7 @@ export const CHAT_EXAMPLES = [
     id: 'm-003',
     sender: {
       id: 'manager-01',
-      nickname: '김ㅇㅇ 매니저',
+      nickname: 'VIVIZ 매니저',
       profile_image: MANAGER_PROFILE_IMAGE,
     },
     content: '내일 팬사인회 장소가 변경됐어요.',
@@ -79,7 +79,7 @@ export const CHAT_EXAMPLES = [
     id: 'm-004',
     sender: {
       id: 'manager-01',
-      nickname: '김ㅇㅇ 매니저',
+      nickname: 'VIVIZ 매니저',
       profile_image: MANAGER_PROFILE_IMAGE,
     },
     content:
@@ -90,7 +90,7 @@ export const CHAT_EXAMPLES = [
     id: 'm-005',
     sender: {
       id: 'idol-01',
-      nickname: '리즈',
+      nickname: '은하',
       profile_image: undefined,
     },
     content: 'B홀 3층 확인했습니다. 리허설 2시간 전 합류할게요.',
@@ -100,7 +100,7 @@ export const CHAT_EXAMPLES = [
     id: 'm-006',
     sender: {
       id: 'manager-01',
-      nickname: '김ㅇㅇ 매니저',
+      nickname: 'VIVIZ 매니저',
       profile_image: MANAGER_PROFILE_IMAGE,
     },
     content: '의상 컨펌도 부탁해요. 2번 안으로 가면 좋을 듯!',
@@ -110,7 +110,7 @@ export const CHAT_EXAMPLES = [
     id: 'm-007',
     sender: {
       id: 'idol-01',
-      nickname: '리즈',
+      nickname: '은하',
       profile_image: undefined,
     },
     content: '2번 찬성! 신발은 화이트로 갈게요.',
@@ -120,7 +120,7 @@ export const CHAT_EXAMPLES = [
     id: 'm-008',
     sender: {
       id: 'manager-01',
-      nickname: '김ㅇㅇ 매니저',
+      nickname: 'VIVIZ 매니저',
       profile_image: MANAGER_PROFILE_IMAGE,
     },
     content:
@@ -131,7 +131,7 @@ export const CHAT_EXAMPLES = [
     id: 'm-009',
     sender: {
       id: 'idol-01',
-      nickname: '리즈',
+      nickname: '은하',
       profile_image: undefined,
     },
     content: '확인! 끝나고 바로 이동하겠습니다 🙌',
@@ -141,7 +141,7 @@ export const CHAT_EXAMPLES = [
     id: 'm-010',
     sender: {
       id: 'idol-01',
-      nickname: '리즈',
+      nickname: '은하',
       profile_image: undefined,
     },
     content: '스태프 분들께도 공지 부탁드려요. 고생 많으십니다!',
@@ -149,9 +149,16 @@ export const CHAT_EXAMPLES = [
   },
 ];
 
-export const CHAT_FIXTURE_VERSION = '1';
+export const CHAT_FIXTURE_VERSION = '2';
 export const CHAT_REPLY_SEED = 20260930;
 export const CHAT_ROOM_ID = 1;
+
+export const CHAT_PARTICIPANTS: ChatParticipant[] = [
+  { id: 2, nickname: '은하', profile_image: 0 },
+  { id: 4, nickname: '신비', profile_image: 0 },
+  { id: 5, nickname: '엄지', profile_image: 0 },
+  { id: 3, nickname: 'VIVIZ 매니저', profile_image: 0 },
+];
 
 const CHAT_REPLY_CANDIDATES = [
   '확인했어요! 일정도 함께 살펴볼게요.',
@@ -184,7 +191,8 @@ export const addMockChatMessage = (userId: number, content: string) => {
   const replyUser = getDemoUserById(userId === 3 ? 2 : 3);
   if (!user || !replyUser) return null;
 
-  const sentAt = Date.now();
+  const lastSentAt = Date.parse(messages.at(-1)!.sent_at);
+  const sentAt = Math.max(Date.now(), lastSentAt + 1);
   const createMessage = (
     sender: typeof user,
     text: string,
@@ -198,7 +206,7 @@ export const addMockChatMessage = (userId: number, content: string) => {
       profile_image_url: sender.profile_image_url,
     },
     content: text,
-    sent_at: new Date(sentAt + offset * 1000).toISOString(),
+    sent_at: new Date(sentAt + offset - 1).toISOString(),
   });
 
   const message = createMessage(user, content, 1);

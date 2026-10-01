@@ -5,6 +5,7 @@ import { getDemoUserById, getUserIdFromAccessToken } from '@/mocks/data/auth';
 import {
   addMockChatMessage,
   CHAT_FIXTURE_VERSION,
+  CHAT_PARTICIPANTS,
   CHAT_ROOM_ID,
   getMockChatMessages,
 } from '@/mocks/data/chats';
@@ -14,14 +15,27 @@ const getUser = (request: Request) => {
   return getDemoUserById(token ? getUserIdFromAccessToken(token) : null);
 };
 
+const chatAccessError = (request: Request) => {
+  const user = getUser(request);
+  if (!user) {
+    return HttpResponse.json({ message: 'Unauthorized' }, { status: 401 });
+  }
+  if (user.role !== 'IDOL' && user.role !== 'MANAGER') {
+    return HttpResponse.json(
+      { message: '채팅방을 찾을 수 없습니다.' },
+      { status: 404 },
+    );
+  }
+  return null;
+};
+
 const isDemoChatRoom = (roomId: string | readonly string[] | undefined) =>
   Number(roomId) === CHAT_ROOM_ID;
 
 export const chatHandlers = [
   http.get(`${API_BASE_URL}/chats/rooms/`, ({ request }) => {
-    if (!getUser(request)) {
-      return HttpResponse.json({ message: 'Unauthorized' }, { status: 401 });
-    }
+    const accessError = chatAccessError(request);
+    if (accessError) return accessError;
     return HttpResponse.json({
       count: 1,
       next: null,
@@ -33,9 +47,8 @@ export const chatHandlers = [
   http.get(
     `${API_BASE_URL}/chats/rooms/:roomId/participants/`,
     ({ request, params }) => {
-      if (!getUser(request)) {
-        return HttpResponse.json({ message: 'Unauthorized' }, { status: 401 });
-      }
+      const accessError = chatAccessError(request);
+      if (accessError) return accessError;
       if (!isDemoChatRoom(params.roomId)) {
         return HttpResponse.json(
           { message: '채팅방을 찾을 수 없습니다.' },
@@ -43,13 +56,10 @@ export const chatHandlers = [
         );
       }
       return HttpResponse.json({
-        count: 3,
+        count: CHAT_PARTICIPANTS.length,
         next: null,
         previous: null,
-        results: [1, 2, 3].map(id => {
-          const user = getDemoUserById(id)!;
-          return { id: user.id, nickname: user.nickname, profile_image: 0 };
-        }),
+        results: CHAT_PARTICIPANTS,
       });
     },
   ),
@@ -57,9 +67,8 @@ export const chatHandlers = [
   http.get(
     `${API_BASE_URL}/chats/rooms/:roomId/messages/`,
     ({ request, params }) => {
-      if (!getUser(request)) {
-        return HttpResponse.json({ message: 'Unauthorized' }, { status: 401 });
-      }
+      const accessError = chatAccessError(request);
+      if (accessError) return accessError;
       if (!isDemoChatRoom(params.roomId)) {
         return HttpResponse.json(
           { message: '채팅방을 찾을 수 없습니다.' },
@@ -96,10 +105,8 @@ export const chatHandlers = [
   http.post(
     `${API_BASE_URL}/chats/rooms/:roomId/messages/`,
     async ({ request, params }) => {
-      const user = getUser(request);
-      if (!user) {
-        return HttpResponse.json({ message: 'Unauthorized' }, { status: 401 });
-      }
+      const accessError = chatAccessError(request);
+      if (accessError) return accessError;
       if (!isDemoChatRoom(params.roomId)) {
         return HttpResponse.json(
           { message: '채팅방을 찾을 수 없습니다.' },
@@ -116,9 +123,12 @@ export const chatHandlers = [
           { status: 400 },
         );
       }
-      return HttpResponse.json(addMockChatMessage(user.id, content), {
-        status: 201,
-      });
+      return HttpResponse.json(
+        addMockChatMessage(getUser(request)!.id, content),
+        {
+          status: 201,
+        },
+      );
     },
   ),
 ];
