@@ -7,6 +7,7 @@ import { Button } from '@/components/common/Button';
 import Calendar from '@/components/common/calendar/Calendar';
 import DateScheduleList from '@/components/common/dateSchedule/DateScheduleList';
 import Select from '@/components/common/Select';
+import { useUserStore } from '@/stores/userStore';
 
 import { CalendarScheduleLayout, Greeting } from '../shared';
 import { useManagerMainData } from './hooks/useManagerMainData';
@@ -24,6 +25,7 @@ type FormValues = {
 };
 
 export default function ManagerMainPage() {
+  const nickname = useUserStore(state => state.user?.nickname || '매니저');
   const {
     selectedDate,
     setSelectedDate,
@@ -174,7 +176,7 @@ export default function ManagerMainPage() {
     <div className="mx-auto mb-16 max-w-screen-xl px-3 pt-12 md:px-8 lg:mb-24 lg:px-2 lg:pt-6">
       <Greeting
         userRole="manager"
-        title="안녕하세요, 매니저 A님!"
+        title={`안녕하세요, ${nickname}님!`}
         subtitle={
           <span className="inline-flex items-center gap-2">
             현재 담당 아이돌은

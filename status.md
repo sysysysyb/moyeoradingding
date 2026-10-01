@@ -1,34 +1,34 @@
 # Workflow Status
 
-> Updated: 2026-10-01 15:04 KST
+> Updated: 2026-10-01 16:20 KST
 
 ## Current state
 
 * Status: review
-* Stage: Issue #8 follow-up verified locally; awaiting user review
+* Stage: Issue #8 PR opened; awaiting review and rebase merge approval
 
 ## Active work
 
 * Issue: [#8](https://github.com/sysysysyb/moyeoradingding/issues/8)
 * Branch: `feat/8-mock-chat`
-* Pull Request: None
+* Pull Request: [#15](https://github.com/sysysysyb/moyeoradingding/pull/15)
 * Plan: [Approved Spec #4](https://github.com/sysysysyb/moyeoradingding/issues/4)
 * Design: None
 
 ## Current checkpoint
 
-* Last completed: Verified production preview `/chat` refresh for fan and idol roles
-* Latest verification: Build, changed-file ESLint, role-gated Chat, and production preview refresh passed; full lint was interrupted after prior baseline failures
+* Last completed: PR #15 opened against `dev` with Issue #8 commits and review report
+* Latest verification: PR base, head, body, labels, and commits verified; build, changed-file ESLint, and browser flows passed earlier
 
 ## Review focus
 
-* `src/App.tsx::ChatRoute` — fan route restriction and 404 fallback
-* `src/mocks/handlers/chats.ts::chatHandlers` — fan API restriction and participant list
-* `src/mocks/data/chats.ts::addMockChatMessage` — rapid-send ordering
+* `src/pages/Login.tsx::Login` — role-based demo login buttons and labels
+* `src/App.tsx::ChatRoute` — role guard and 404 fallback
+* `src/mocks/handlers/chats.ts::chatHandlers` — mock Chat API access rules
 
 ## Remaining risk
 
-* Manager main still shows static Manager A and Karina copy alongside the VIVIZ Chat fixture.
+* Chat can still open on historical messages; initial bottom position is planned for Issue #9.
 
 ## Blockers
 
@@ -37,4 +37,4 @@
 ## Next action
 
 * Owner: User
-* Action: Review the updated Issue #8 implementation report and approve it or request changes.
+* Action: Review PR #15 and approve rebase merge or request changes.

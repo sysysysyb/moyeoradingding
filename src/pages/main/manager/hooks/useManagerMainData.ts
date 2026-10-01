@@ -9,11 +9,13 @@ export function useManagerMainData() {
   const [selectedDate, setSelectedDate] = useState<Dayjs>(() => dayjs());
 
   const idols: SelectOption[] = [
-    { id: 201, label: '카리나' },
-    { id: 202, label: '윈터' },
-    { id: 203, label: '닝닝' },
+    { id: 201, label: '은하' },
+    { id: 202, label: '신비' },
+    { id: 203, label: '엄지' },
   ];
   const [currentIdolId, setCurrentIdolId] = useState<number>(idols[0].id);
+  const selectedIdolName =
+    idols.find(idol => idol.id === currentIdolId)?.label ?? '은하';
 
   const [allSchedules, setAllSchedules] = useState<Schedule[]>([]);
 
@@ -27,7 +29,7 @@ export function useManagerMainData() {
         startTime: `${iso}T14:00:00`,
         endTime: `${iso}T15:00:00`,
         isPublic: true,
-        idol: { id: currentIdolId, name: '에스파' },
+        idol: { id: currentIdolId, name: 'VIVIZ' },
         place: 'KBS 공개홀',
         description: '리허설',
       },
@@ -37,14 +39,14 @@ export function useManagerMainData() {
         startTime: `${iso}T16:00:00`,
         endTime: `${iso}T17:00:00`,
         isPublic: true,
-        idol: { id: currentIdolId, name: '카리나' },
+        idol: { id: currentIdolId, name: selectedIdolName },
         place: 'KBS 스튜디오',
         description: '사녹',
       },
     ];
 
     setAllSchedules(mock as Schedule[]);
-  }, [selectedDate, currentIdolId]);
+  }, [selectedDate, currentIdolId, selectedIdolName]);
 
   const filteredSchedules = useMemo(() => allSchedules, [allSchedules]);
 
@@ -64,11 +66,11 @@ export function useManagerMainData() {
         place: draft.place ?? '',
         description: draft.description ?? '',
         isPublic: draft.isPublic,
-        idol: { id: currentIdolId, name: '선택 아이돌' },
+        idol: { id: currentIdolId, name: selectedIdolName },
       };
       setAllSchedules(prev => [newItem as Schedule, ...prev]);
     },
-    [currentIdolId],
+    [currentIdolId, selectedIdolName],
   );
 
   const updateSchedule = useCallback(
