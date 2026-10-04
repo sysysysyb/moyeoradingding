@@ -114,6 +114,8 @@ Do not replace working behavior without explaining the affected invariant and ve
 
 Read `package.json` before choosing commands. Use only scripts and tools that exist in the repository.
 
+After preserving verification results and required review evidence, promptly delete unneeded temporary files, logs, and screenshots created by the agent during the current task, verifying their paths and purpose and leaving user-owned or unidentified files untouched.
+
 ### Build and TypeScript
 
 Run `npm run build` when TypeScript or production bundling can be affected.
