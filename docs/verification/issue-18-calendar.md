@@ -3,7 +3,7 @@
 - 요구사항: [Issue #18](https://github.com/sysysysyb/moyeoradingding/issues/18)
 - 검증일: 2026-10-04 KST
 - Red 기준: `c9fb7e7524d96f8f89c370185dfda252dc5f23e5`
-- Green 대상: `fix/18-calendar-schedule-persistence`의 커밋 전 작업 트리
+- Green 대상: `7dab4ed`에 저장된 구현 및 은하 후속 수정. PR 준비 과정에서는 소스를 변경하지 않았다.
 - 환경: 로컬 Vite 개발 서버, Chrome, MSW 데모 모드. 실제 로그인 화면의 역할별 데모 로그인 버튼 사용.
 - R1–R5는 Issue 완료 조건의 순서에 붙인 이 문서의 식별자다.
 
@@ -87,5 +87,7 @@
 
 - 2026-10-05 사용자가 구현 검토를 마치고 로컬 커밋을 승인했다.
 - Issue #18 커밋: `db05df0` — `🐛 Fix: 아이돌·매니저 달력 일정 표시와 데모 변경 유지 (#18)`
-- 별도 후속 커밋 제목: `🐛 Fix: 아이돌 데모 일정을 은하와 일치하도록 수정`
-- push·PR 생성·병합·Issue 종료는 수행하지 않았다. 승인 후 PR은 `dev` 대상으로 만들고 rebase merge한다.
+- 은하 후속 커밋: `7dab4ed` — `🐛 Fix: 아이돌 데모 일정을 은하와 일치하도록 수정`
+- 정리 규칙 후속 커밋: `afe0c11` — `📝 Docs: 검증 후 임시 파일 정리 규칙 추가`. 검증 증거를 보존한 뒤 불필요한 임시 파일 25개를 삭제했다.
+- 사용자 승인으로 브랜치를 push하고 [PR #19](https://github.com/sysysysyb/moyeoradingding/pull/19)를 생성했다. 대상 `dev`, `🐞 Bug`·`📝 Docs` 라벨, Issue #18 연결을 확인했다.
+- 병합·Issue 종료는 수행하지 않았다. 사용자 병합 승인 후 rebase merge한다.

@@ -1,28 +1,30 @@
 # Workflow Status
 
-> Updated: 2026-10-05 00:16 KST
+> Updated: 2026-10-05 01:12 KST
 
 ## Current state
 
 * Status: awaiting approval
-* Stage: Approved implementation and `은하` follow-up committed locally; awaiting explicit push/PR approval
+* Stage: PR created against `dev`; awaiting explicit rebase merge approval
 
 ## Active work
 
 * Issue: [#18](https://github.com/sysysysyb/moyeoradingding/issues/18)
 * Branch: `fix/18-calendar-schedule-persistence`
-* Pull Request: None
+* Pull Request: [#19](https://github.com/sysysysyb/moyeoradingding/pull/19)
 * Plan: [Issue #18 requirements and verification](https://github.com/sysysysyb/moyeoradingding/issues/18)
 * Design: None
 
 ## Current checkpoint
 
-* Last completed: Issue #18 and the approved mock follow-up saved in two local commits with verification evidence
-* Latest verification: Commit contents and staged diff checks passed; preserved ESLint, TypeScript/build and browser QA passed; Standards/Spec findings 0.
+* Last completed: Approved implementation and follow-ups pushed; PR #19 created with the durable verification report
+* Latest verification: PR base/head, labels and Issue #18 link confirmed; preserved ESLint, TypeScript/build and browser QA passed; Standards/Spec findings 0.
 
 ## Review focus
 
-* None
+* `src/pages/main/idol/hooks/useIdolMainData.ts` — full calendar data and daily filtering
+* `src/pages/main/manager/hooks/useManagerMainData.ts` — schedule changes survive date/month and idol selection
+* `src/mocks/data/schedules.ts` — monthly manager seeds and 은하 default lookup
 
 ## Remaining risk
 
@@ -35,4 +37,4 @@
 ## Next action
 
 * Owner: User
-* Action: Approve pushing the branch and creating its PR targeting `dev`.
+* Action: Approve rebase merging PR #19 into `dev`.
