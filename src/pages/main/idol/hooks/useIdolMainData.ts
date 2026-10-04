@@ -20,19 +20,11 @@ export function useIdolMainData() {
     load();
   }, []);
 
-  const monthlySchedules = useMemo(
-    () =>
-      allSchedules.filter(s =>
-        dayjs(s.startTime).isSame(selectedDate, 'month'),
-      ),
-    [allSchedules, selectedDate],
-  );
-
   const dailySchedules = useMemo(
     () =>
       allSchedules.filter(s => dayjs(s.startTime).isSame(selectedDate, 'day')),
     [allSchedules, selectedDate],
   );
 
-  return { selectedDate, setSelectedDate, monthlySchedules, dailySchedules };
+  return { selectedDate, setSelectedDate, allSchedules, dailySchedules };
 }

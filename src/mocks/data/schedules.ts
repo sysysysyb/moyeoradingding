@@ -4,6 +4,7 @@ import type {
   PaginatedResponse,
   RawScheduleContent,
 } from '@/types/bookmark';
+import type { IdolSchedule } from '@/types/schedule';
 
 type MockSchedule = RawScheduleContent;
 
@@ -186,6 +187,38 @@ const MOCK_IDOL_SCHEDULES: MockSchedule[] = MOCK_IDOLS.flatMap(idol =>
     ),
   ),
 );
+
+export const MOCK_MANAGER_IDOLS = [
+  { id: 201, label: '은하' },
+  { id: 202, label: '신비' },
+  { id: 203, label: '엄지' },
+];
+
+export const createMockManagerSchedules = (): IdolSchedule[] =>
+  MOCK_MANAGER_IDOLS.flatMap(idol =>
+    scheduleTemplates.map((template, index) => {
+      const schedule = createSchedule(
+        idol.id,
+        index + 1,
+        getRelativeMonthDate(template.monthOffset, template.day),
+        `${idol.label} ${template.title}`,
+        template.time,
+        template.location,
+        template.description,
+      );
+
+      return {
+        id: schedule.id,
+        title: schedule.title,
+        startTime: schedule.start_time,
+        endTime: schedule.end_time,
+        isPublic: schedule.is_public,
+        idol: { id: idol.id, name: idol.label },
+        place: schedule.location,
+        description: schedule.description,
+      };
+    }),
+  );
 
 let nextBookmarkId = 500;
 let myScheduleBookmarks: BookmarkSchedule[] = [];

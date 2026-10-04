@@ -10,7 +10,7 @@ import { CalendarScheduleLayout, Greeting } from '../shared';
 import { useIdolMainData } from './hooks/useIdolMainData';
 
 export default function IdolMainPage() {
-  const { selectedDate, setSelectedDate, monthlySchedules, dailySchedules } =
+  const { selectedDate, setSelectedDate, allSchedules, dailySchedules } =
     useIdolMainData();
 
   const navigate = useNavigate();
@@ -52,7 +52,7 @@ export default function IdolMainPage() {
           <Calendar
             selectedDate={selectedDate}
             onDateChange={setSelectedDate}
-            schedules={monthlySchedules}
+            schedules={allSchedules}
           />
         }
         daily={
