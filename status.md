@@ -1,34 +1,32 @@
 # Workflow Status
 
-> Updated: 2026-10-01 22:18 KST
+> Updated: 2026-10-05 00:11 KST
 
 ## Current state
 
-* Status: review
-* Stage: Issue #16 implemented and verified locally; awaiting user review
+* Status: in progress
+* Stage: User approved Issue #18 and the `은하` follow-up; preparing separate local commits
 
 ## Active work
 
-* Issue: [#16](https://github.com/sysysysyb/moyeoradingding/issues/16)
-* Branch: `fix/16-eslint-cleanup`
+* Issue: [#18](https://github.com/sysysysyb/moyeoradingding/issues/18)
+* Branch: `fix/18-calendar-schedule-persistence`
 * Pull Request: None
-* Plan: None
+* Plan: [Issue #18 requirements and verification](https://github.com/sysysysyb/moyeoradingding/issues/18)
 * Design: None
 
 ## Current checkpoint
 
-* Last completed: Existing lint baseline fixed; affected demo flows checked in browser
-* Latest verification: `npm run lint`, changed-file ESLint, and `npm run build` passed; browser QA found no errors in normal flows
+* Last completed: User review completed and local commits explicitly authorized
+* Latest verification: Follow-up changed-file/full ESLint and TypeScript/build passed; all 15 default schedules use `은하`; three-month UI and fan details passed; Standards/Spec findings 0.
 
 ## Review focus
 
-* `src/api/scheduleApi.ts::toIdolSchedule` — response shape and schedule mapping
-* `src/components/common/input/index.tsx::Input` — type-safe dispatch without changing input behavior
-* `src/hooks/useLogout.tsx::useLogout` — confirmation and local logout on API failure
+* None
 
 ## Remaining risk
 
-* Manager demo mock schedules reset when the selected date changes; observed during browser QA and outside Issue #16.
+* Production bundle still reports a chunk over 500kB; bundle optimization is deferred.
 
 ## Blockers
 
@@ -36,5 +34,5 @@
 
 ## Next action
 
-* Owner: User
-* Action: Review Issue #16 changes and approve push/PR creation or request changes.
+* Owner: Codex
+* Action: Commit the approved implementation and mock follow-up as separate local changes.

@@ -1,54 +1,28 @@
 import dayjs, { Dayjs } from 'dayjs';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
-import type { IdolSchedule, Schedule } from '@/types/schedule';
-
-type SelectOption = { id: number; label: string };
+import {
+  createMockManagerSchedules,
+  MOCK_MANAGER_IDOLS,
+} from '@/mocks/data/schedules';
+import type { IdolSchedule } from '@/types/schedule';
 
 export function useManagerMainData() {
   const [selectedDate, setSelectedDate] = useState<Dayjs>(() => dayjs());
 
-  const idols: SelectOption[] = [
-    { id: 201, label: '은하' },
-    { id: 202, label: '신비' },
-    { id: 203, label: '엄지' },
-  ];
+  const idols = MOCK_MANAGER_IDOLS;
   const [currentIdolId, setCurrentIdolId] = useState<number>(idols[0].id);
   const selectedIdolName =
     idols.find(idol => idol.id === currentIdolId)?.label ?? '은하';
 
-  const [allSchedules, setAllSchedules] = useState<Schedule[]>([]);
+  const [allSchedules, setAllSchedules] = useState<IdolSchedule[]>(
+    createMockManagerSchedules,
+  );
 
-  useEffect(() => {
-    const iso = selectedDate.format('YYYY-MM-DD');
-
-    const mock: IdolSchedule[] = [
-      {
-        id: 1,
-        title: '뮤직뱅크 리허설',
-        startTime: `${iso}T14:00:00`,
-        endTime: `${iso}T15:00:00`,
-        isPublic: true,
-        idol: { id: currentIdolId, name: 'VIVIZ' },
-        place: 'KBS 공개홀',
-        description: '리허설',
-      },
-      {
-        id: 2,
-        title: '뮤직뱅크 사전녹화',
-        startTime: `${iso}T16:00:00`,
-        endTime: `${iso}T17:00:00`,
-        isPublic: true,
-        idol: { id: currentIdolId, name: selectedIdolName },
-        place: 'KBS 스튜디오',
-        description: '사녹',
-      },
-    ];
-
-    setAllSchedules(mock as Schedule[]);
-  }, [selectedDate, currentIdolId, selectedIdolName]);
-
-  const filteredSchedules = useMemo(() => allSchedules, [allSchedules]);
+  const filteredSchedules = useMemo(
+    () => allSchedules.filter(schedule => schedule.idol.id === currentIdolId),
+    [allSchedules, currentIdolId],
+  );
 
   const createSchedule = useCallback(
     (draft: {
@@ -68,7 +42,7 @@ export function useManagerMainData() {
         isPublic: draft.isPublic,
         idol: { id: currentIdolId, name: selectedIdolName },
       };
-      setAllSchedules(prev => [newItem as Schedule, ...prev]);
+      setAllSchedules(prev => [newItem, ...prev]);
     },
     [currentIdolId, selectedIdolName],
   );
