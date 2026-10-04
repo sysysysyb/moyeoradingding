@@ -1,4 +1,4 @@
-import { MOCK_IDOLS } from '@/mocks/data/idols';
+import { DEMO_IDOL, MOCK_IDOLS } from '@/mocks/data/idols';
 import type {
   BookmarkSchedule,
   PaginatedResponse,
@@ -247,7 +247,7 @@ const createBookmarkSchedule = (
 };
 
 export const getMockIdolSchedules = (idolId?: number, dateISO?: string) => {
-  const targetIdolId = idolId ?? MOCK_IDOLS[0].id;
+  const targetIdolId = idolId ?? DEMO_IDOL.id;
 
   return MOCK_IDOL_SCHEDULES.filter(
     schedule =>

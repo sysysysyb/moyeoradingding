@@ -46,6 +46,14 @@ function saveServerFavorites(ids: number[]) {
 const avatar = (seed: string, size = 256) =>
   `https://api.dicebear.com/7.x/thumbs/png?seed=${encodeURIComponent(seed)}&size=${size}`;
 
+export const DEMO_IDOL: Idol = {
+  id: 10001,
+  name: '은하',
+  groupName: 'VIVIZ',
+  avatarUrl: avatar('VIVIZ-은하'),
+  position: '보컬',
+};
+
 // ==============================
 // 기본(실존 느낌) 그룹 데이터
 // ==============================
@@ -198,7 +206,7 @@ const EXTRA_GROUPS: GroupDef[] = Array.from({
 // ==============================
 function buildMockIdols(): Idol[] {
   let nextId = 0;
-  const idols: Idol[] = [];
+  const idols: Idol[] = [DEMO_IDOL];
   const allGroups = [...GROUPS, ...EXTRA_GROUPS];
 
   allGroups.forEach(({ group, members }) => {
