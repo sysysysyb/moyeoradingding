@@ -1,11 +1,11 @@
 # Workflow Status
 
-> Updated: 2026-10-05 00:11 KST
+> Updated: 2026-10-05 00:16 KST
 
 ## Current state
 
-* Status: in progress
-* Stage: User approved Issue #18 and the `은하` follow-up; preparing separate local commits
+* Status: awaiting approval
+* Stage: Approved implementation and `은하` follow-up committed locally; awaiting explicit push/PR approval
 
 ## Active work
 
@@ -17,8 +17,8 @@
 
 ## Current checkpoint
 
-* Last completed: User review completed and local commits explicitly authorized
-* Latest verification: Follow-up changed-file/full ESLint and TypeScript/build passed; all 15 default schedules use `은하`; three-month UI and fan details passed; Standards/Spec findings 0.
+* Last completed: Issue #18 and the approved mock follow-up saved in two local commits with verification evidence
+* Latest verification: Commit contents and staged diff checks passed; preserved ESLint, TypeScript/build and browser QA passed; Standards/Spec findings 0.
 
 ## Review focus
 
@@ -34,5 +34,5 @@
 
 ## Next action
 
-* Owner: Codex
-* Action: Commit the approved implementation and mock follow-up as separate local changes.
+* Owner: User
+* Action: Approve pushing the branch and creating its PR targeting `dev`.
