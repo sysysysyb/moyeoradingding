@@ -1,11 +1,11 @@
 # Workflow Status
 
-> Updated: 2026-10-05 01:12 KST
+> Updated: 2026-10-05 23:14 KST
 
 ## Current state
 
 * Status: awaiting approval
-* Stage: PR created against `dev`; awaiting explicit rebase merge approval
+* Stage: PR evidence recaptured and report wording revised; awaiting explicit rebase merge approval
 
 ## Active work
 
@@ -17,14 +17,13 @@
 
 ## Current checkpoint
 
-* Last completed: Approved implementation and follow-ups pushed; PR #19 created with the durable verification report
-* Latest verification: PR base/head, labels and Issue #18 link confirmed; preserved ESLint, TypeScript/build and browser QA passed; Standards/Spec findings 0.
+* Last completed: Manager baseline registration loss reproduced and recaptured with the header at the top; report uses generic demo terminology
+* Latest verification: Baseline date round trip and screenshot SHA-256 match passed; header Y=0; no console errors, one existing input validation warning. Implementation checks preserved in the report.
 
 ## Review focus
 
-* `src/pages/main/idol/hooks/useIdolMainData.ts` — full calendar data and daily filtering
-* `src/pages/main/manager/hooks/useManagerMainData.ts` — schedule changes survive date/month and idol selection
-* `src/mocks/data/schedules.ts` — monthly manager seeds and 은하 default lookup
+* `docs/verification/issue-18/red-manager-return.png` — recaptured baseline with the header at the top
+* `docs/verification/issue-18-calendar.md` — preserved evidence and generic demo terminology
 
 ## Remaining risk
 
