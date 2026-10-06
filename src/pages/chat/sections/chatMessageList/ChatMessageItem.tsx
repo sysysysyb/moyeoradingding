@@ -16,6 +16,7 @@ function ChatMessageItem(data: GroupedChatTypes) {
   const bubbles = contents.map(content => (
     <ChatMessageBubble
       key={content.id}
+      id={content.id}
       isMyChat={isMyChat}
       text={content.text}
     />

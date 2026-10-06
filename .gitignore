@@ -34,3 +34,7 @@ dist-ssr
 
 # Vercel local project metadata
 .vercel/
+
+# Local browser QA and performance evidence (publish only with explicit approval)
+output/playwright/
+.playwright-cli/

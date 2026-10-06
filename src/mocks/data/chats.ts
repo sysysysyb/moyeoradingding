@@ -1,6 +1,7 @@
 import type { ChatMessage, ChatParticipant } from '@/pages/chat/chat.types';
 
 import { getDemoUserById } from './auth';
+import { createChatBenchmark, isChatBenchmark } from './chatBenchmark';
 
 const MANAGER_PROFILE_IMAGE = 'https://picsum.photos/id/237/300/300';
 
@@ -149,7 +150,7 @@ export const CHAT_EXAMPLES = [
   },
 ];
 
-export const CHAT_FIXTURE_VERSION = '2';
+export const CHAT_FIXTURE_VERSION = '3';
 export const CHAT_REPLY_SEED = 20260930;
 export const CHAT_ROOM_ID = 1;
 
@@ -168,20 +169,22 @@ const CHAT_REPLY_CANDIDATES = [
   '메시지 받았어요! 함께 진행해요 🙌',
 ];
 
-let messages: ChatMessage[] = CHAT_EXAMPLES.map((example, index) => {
-  const user = getDemoUserById(example.sender.id === 'manager-01' ? 3 : 2)!;
-  return {
-    id: index + 1,
-    sender: {
-      id: user.id,
-      nickname: user.nickname,
-      role: user.role as 'MANAGER' | 'IDOL',
-      profile_image_url: user.profile_image_url,
-    },
-    content: example.content,
-    sent_at: example.sendAt,
-  };
-});
+let messages: ChatMessage[] = isChatBenchmark
+  ? createChatBenchmark()
+  : CHAT_EXAMPLES.map((example, index) => {
+      const user = getDemoUserById(example.sender.id === 'manager-01' ? 3 : 2)!;
+      return {
+        id: index + 1,
+        sender: {
+          id: user.id,
+          nickname: user.nickname,
+          role: user.role as 'MANAGER' | 'IDOL',
+          profile_image_url: user.profile_image_url,
+        },
+        content: example.content,
+        sent_at: example.sendAt,
+      };
+    });
 let replyCount = 0;
 
 export const getMockChatMessages = () => messages;
@@ -191,8 +194,10 @@ export const addMockChatMessage = (userId: number, content: string) => {
   const replyUser = getDemoUserById(userId === 3 ? 2 : 3);
   if (!user || !replyUser) return null;
 
-  const lastSentAt = Date.parse(messages.at(-1)!.sent_at);
-  const sentAt = Math.max(Date.now(), lastSentAt + 1);
+  const lastSentAt = Date.parse(messages.at(-1)?.sent_at || '2025-08-01');
+  const sentAt = isChatBenchmark
+    ? lastSentAt + 1
+    : Math.max(Date.now(), lastSentAt + 1);
   const createMessage = (
     sender: typeof user,
     text: string,
@@ -203,7 +208,7 @@ export const addMockChatMessage = (userId: number, content: string) => {
       id: sender.id,
       nickname: sender.nickname,
       role: sender.role as ChatMessage['sender']['role'],
-      profile_image_url: sender.profile_image_url,
+      profile_image_url: isChatBenchmark ? null : sender.profile_image_url,
     },
     content: text,
     sent_at: new Date(sentAt + offset - 1).toISOString(),

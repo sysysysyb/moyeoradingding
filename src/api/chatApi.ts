@@ -69,9 +69,15 @@ export const leaveChatRoomAPI = async (roomId: number, roomName: string) => {
   return res.data;
 };
 
-export const getChatMessageAPI = async (roomId: number, page: number) => {
+export const getChatMessageAPI = async (
+  roomId: number,
+  page: number,
+  beforeId?: number,
+  signal?: AbortSignal,
+) => {
   const res = await axiosInstance.get<PaginatedResponse<ChatMessage>>(
-    `/chats/rooms/${roomId}/messages/?page=${page}`,
+    `/chats/rooms/${roomId}/messages/`,
+    { params: { page, before_id: beforeId }, signal },
   );
   return res.data;
 };

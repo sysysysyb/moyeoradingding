@@ -23,7 +23,7 @@ const DEMO_ACCOUNTS: Array<LoginFormValues & { label: string }> = [
     userType: 'NORMAL',
     email: 'test@test.com',
     password: 'test123!',
-    label: '일반 회원(팬)',
+    label: '일반 계정(팬) 데모',
   },
   {
     userType: 'IDOL',
