@@ -3,6 +3,10 @@ import { http, HttpResponse } from 'msw';
 import { API_BASE_URL } from '@/api/config';
 import { getDemoUserById, getUserIdFromAccessToken } from '@/mocks/data/auth';
 import {
+  CHAT_BENCHMARK_VERSION,
+  isChatBenchmark,
+} from '@/mocks/data/chatBenchmark';
+import {
   addMockChatMessage,
   CHAT_FIXTURE_VERSION,
   CHAT_PARTICIPANTS,
@@ -85,10 +89,30 @@ export const chatHandlers = [
         );
       }
       const messages = getMockChatMessages();
-      const pageSize = 10;
-      const end = Math.max(messages.length - (page - 1) * pageSize, 0);
+      const pageSize = 50;
+      const beforeId = url.searchParams.get('before_id');
+      if (
+        beforeId !== null &&
+        (!Number.isInteger(Number(beforeId)) || Number(beforeId) < 1)
+      ) {
+        return HttpResponse.json(
+          { message: '잘못된 메시지 경계입니다.' },
+          { status: 400 },
+        );
+      }
+      const boundary =
+        beforeId === null
+          ? -1
+          : messages.findIndex(message => message.id >= Number(beforeId));
+      const cursorEnd = boundary === -1 ? messages.length : boundary;
+      const end =
+        beforeId === null
+          ? Math.max(messages.length - (page - 1) * pageSize, 0)
+          : cursorEnd;
       const start = Math.max(end - pageSize, 0);
       url.searchParams.set('page', String(page + 1));
+      if (start > 0)
+        url.searchParams.set('before_id', String(messages[start].id));
 
       return HttpResponse.json(
         {
@@ -97,7 +121,13 @@ export const chatHandlers = [
           previous: null,
           results: messages.slice(start, end),
         },
-        { headers: { 'X-Demo-Fixture-Version': CHAT_FIXTURE_VERSION } },
+        {
+          headers: {
+            'X-Demo-Fixture-Version': isChatBenchmark
+              ? CHAT_BENCHMARK_VERSION
+              : CHAT_FIXTURE_VERSION,
+          },
+        },
       );
     },
   ),

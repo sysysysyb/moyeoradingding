@@ -13,6 +13,7 @@ export interface ChatMessageGroupTypes {
 }
 
 export interface ChatMessageBubbleTypes {
+  id: number;
   isMyChat: boolean;
   text: string;
 }

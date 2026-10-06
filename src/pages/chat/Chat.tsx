@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  type InfiniteData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 
@@ -6,6 +11,7 @@ import { getMyChatRoomListAPI, sendChatMessageAPI } from '@/api/chatApi';
 import { useChatStore } from '@/stores/chatRoomIdStore';
 import { showErrorToast } from '@/utils/toastUtils';
 
+import type { ChatMessage, PaginatedResponse } from './chat.types';
 import ChatComposer from './sections/chatComposer/ChatComposer';
 import ChatContactList from './sections/chatContactList/ChatContactList';
 import ChatMessageList from './sections/chatMessageList/ChatMessageList';
@@ -27,9 +33,38 @@ function Chat() {
   }, [clearRoomId, selectedRoomId, setRoomId]);
 
   const sendMutation = useMutation({
-    mutationFn: (content: string) => sendChatMessageAPI(roomId!, content),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['getChatMessage', roomId] });
+    mutationFn: (message: { roomId: number; content: string }) =>
+      sendChatMessageAPI(message.roomId, message.content),
+    onSuccess: async (result, variables) => {
+      // A pending pagination response must not replace the newly appended messages.
+      await queryClient.cancelQueries({
+        queryKey: ['getChatMessage', variables.roomId],
+        exact: true,
+      });
+      if (!queryClient.getQueryData(['getChatMessage', variables.roomId])) {
+        await queryClient.invalidateQueries({
+          queryKey: ['getChatMessage', variables.roomId],
+          exact: true,
+        });
+        return;
+      }
+      queryClient.setQueryData<InfiniteData<PaginatedResponse<ChatMessage>>>(
+        ['getChatMessage', variables.roomId],
+        current => {
+          if (!current) return current;
+          return {
+            ...current,
+            pages: current.pages.map((page, index) => ({
+              ...page,
+              count: page.count + 2,
+              results:
+                index === 0
+                  ? [...page.results, result.message, result.reply]
+                  : page.results,
+            })),
+          };
+        },
+      );
     },
     onError: () =>
       showErrorToast('메시지를 보내지 못했습니다. 다시 시도해주세요.'),
@@ -38,7 +73,7 @@ function Chat() {
   const handleSendMessage = async (content: string) => {
     if (!roomId) return false;
     try {
-      await sendMutation.mutateAsync(content);
+      await sendMutation.mutateAsync({ roomId, content });
       return true;
     } catch {
       return false;
@@ -88,7 +123,7 @@ function Chat() {
       </aside>
       <article className="relative flex min-h-0 flex-3 flex-col px-4">
         <section className="min-h-0 flex-1 pt-4">
-          <ChatMessageList />
+          <ChatMessageList key={roomId} />
         </section>
         <section className="shrink-0">
           <ChatComposer

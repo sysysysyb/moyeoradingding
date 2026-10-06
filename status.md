@@ -1,33 +1,32 @@
 # Workflow Status
 
-> Updated: 2026-10-05 23:14 KST
+> Updated: 2026-10-06 15:33 KST
 
 ## Current state
 
 * Status: awaiting approval
-* Stage: PR evidence recaptured and report wording revised; awaiting explicit rebase merge approval
+* Stage: Issue #9 implementation reviewed and approved for local commit; awaiting publication approval
 
 ## Active work
 
-* Issue: [#18](https://github.com/sysysysyb/moyeoradingding/issues/18)
-* Branch: `fix/18-calendar-schedule-persistence`
-* Pull Request: [#19](https://github.com/sysysysyb/moyeoradingding/pull/19)
-* Plan: [Issue #18 requirements and verification](https://github.com/sysysysyb/moyeoradingding/issues/18)
+* Issue: [#9](https://github.com/sysysysyb/moyeoradingding/issues/9)
+* Branch: `feat/9-chat-nonvirtual-baseline`
+* Pull Request: None
+* Plan: [Issue #9 requirements](https://github.com/sysysysyb/moyeoradingding/issues/9), [Spec #4](https://github.com/sysysysyb/moyeoradingding/issues/4)
 * Design: None
 
 ## Current checkpoint
 
-* Last completed: Manager baseline registration loss reproduced and recaptured with the header at the top; report uses generic demo terminology
-* Latest verification: Baseline date round trip and screenshot SHA-256 match passed; header Y=0; no console errors, one existing input validation warning. Implementation checks preserved in the report.
+* Last completed: Approved implementation prepared as one commit; detailed verification materials excluded from tracked files and retained locally.
+* Latest verification: Staged diff checks and local preservation checks passed; implementation matches the reviewed source. Prior build, lint and browser verification remain valid.
 
 ## Review focus
 
-* `docs/verification/issue-18/red-manager-return.png` — recaptured baseline with the header at the top
-* `docs/verification/issue-18-calendar.md` — preserved evidence and generic demo terminology
+* None
 
 ## Remaining risk
 
-* Production bundle still reports a chunk over 500kB; bundle optimization is deferred.
+* None
 
 ## Blockers
 
@@ -36,4 +35,4 @@
 ## Next action
 
 * Owner: User
-* Action: Approve rebase merging PR #19 into `dev`.
+* Action: Authorize pushing the Issue #9 branch and creating a Pull Request targeting `dev`.
