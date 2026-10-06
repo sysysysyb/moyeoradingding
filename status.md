@@ -1,24 +1,24 @@
 # Workflow Status
 
-> Updated: 2026-10-06 15:33 KST
+> Updated: 2026-10-06 17:48 KST
 
 ## Current state
 
-* Status: awaiting approval
-* Stage: Issue #9 implementation reviewed and approved for local commit; awaiting publication approval
+* Status: in progress
+* Stage: Issue #10 push and Pull Request creation approved by user
 
 ## Active work
 
-* Issue: [#9](https://github.com/sysysysyb/moyeoradingding/issues/9)
-* Branch: `feat/9-chat-nonvirtual-baseline`
+* Issue: [#10](https://github.com/sysysysyb/moyeoradingding/issues/10)
+* Branch: `feat/10-chat-virtualization`
 * Pull Request: None
-* Plan: [Issue #9 requirements](https://github.com/sysysysyb/moyeoradingding/issues/9), [Spec #4](https://github.com/sysysysyb/moyeoradingding/issues/4)
+* Plan: [Issue #10 requirements](https://github.com/sysysysyb/moyeoradingding/issues/10), [Spec #4](https://github.com/sysysysyb/moyeoradingding/issues/4)
 * Design: None
 
 ## Current checkpoint
 
-* Last completed: Approved implementation prepared as one commit; detailed verification materials excluded from tracked files and retained locally.
-* Latest verification: Staged diff checks and local preservation checks passed; implementation matches the reviewed source. Prior build, lint and browser verification remain valid.
+* Last completed: User accepted finishing after functional QA, three-run comparison, and scroll-cost diagnosis; push and Pull Request creation approved.
+* Latest verification: Build/lint and browser QA passed; virtual scroll work stayed about 223–259ms over 50–10,000 messages, versus baseline 106–1,063ms. Additional tests not run in this checkpoint.
 
 ## Review focus
 
@@ -26,7 +26,7 @@
 
 ## Remaining risk
 
-* None
+* Direct click/keyboard latency and real low-end-device performance have not been benchmarked.
 
 ## Blockers
 
@@ -34,5 +34,5 @@
 
 ## Next action
 
-* Owner: User
-* Action: Authorize pushing the Issue #9 branch and creating a Pull Request targeting `dev`.
+* Owner: Codex
+* Action: Push `feat/10-chat-virtualization` and create its Pull Request targeting `dev`.

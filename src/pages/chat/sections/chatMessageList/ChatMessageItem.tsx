@@ -7,7 +7,10 @@ import { ChatMessageItemStyles } from '../../chat.styles';
 import type { GroupedChatTypes } from '../../chat.types';
 import ChatMessageBubble from './ChatMessageBubble';
 
-function ChatMessageItem(data: GroupedChatTypes) {
+function ChatMessageItem({
+  continuation = false,
+  ...data
+}: GroupedChatTypes & { continuation?: boolean }) {
   const { user } = useUserStore();
   const userId = user?.user_id;
 
@@ -23,16 +26,26 @@ function ChatMessageItem(data: GroupedChatTypes) {
   ));
 
   return (
-    <div className={clsx(ChatMessageItemStyles({ myChat: isMyChat }))}>
+    <div
+      className={clsx(
+        ChatMessageItemStyles({ myChat: isMyChat }),
+        continuation && isMyChat && 'pt-1',
+      )}
+    >
       {isMyChat && bubbles}
 
       {!isMyChat && (
         <>
-          <UserAvatarImage profileImageUrl={sender.profile_image_url} />
+          <UserAvatarImage
+            profileImageUrl={sender.profile_image_url}
+            className={continuation ? 'invisible' : undefined}
+          />
           <div className="flex w-full flex-col">
-            <span className="text-xs font-medium text-gray-900">
-              {sender.nickname}
-            </span>
+            {!continuation && (
+              <span className="text-xs font-medium text-gray-900">
+                {sender.nickname}
+              </span>
+            )}
             {bubbles}
           </div>
         </>
